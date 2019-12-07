@@ -201,10 +201,11 @@ class Window(Gtk.ApplicationWindow):
 class App(Gtk.Application):
 
     app_id = "com.gkayaalp.pomodorino"
+    app_name = "Pomodorino"  # TODO(2019-12-06): internationalise?
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, application_id=self.app_id, **kwargs)
-        self.title = "Pomodorino"  # TODO(2019-12-06): internationalise?
+        self.title = self.app_name
         self.window = None
         self.previous_state = None
         self.state = States.INITIAL
