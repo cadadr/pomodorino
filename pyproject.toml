@@ -1,0 +1,58 @@
+# Pomodorino --- Simple Pomodoro timer app
+# Copyright (C) 2019  Göktuğ Kayaalp <self at gkayaalp dot com>
+#
+# This file is part of Pomodorino.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+[tool.poetry]
+name = "pomodorino"
+version = "0.1.0-alpha"
+description = "Simple Pomodoro Timer"
+authors = ["Göktuğ Kayaalp <self@gkayaalp.com>"]
+license = "GPL-3.0+"
+readme = "Readme.markdown"
+homepage = "https://www.gkayaalp.com/pomodorino.html"
+repository = "https://github.com/cadadr/pomodorino"
+# keywords =
+# documentation =
+
+# https://pypi.org/classifiers/
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: X11 Applications :: Gnome",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Topic :: Office/Business :: Scheduling",
+    "Topic :: Utilities",
+]
+
+include = [
+    "assets/*",
+    "COPYING"
+]
+
+[tool.poetry.scripts]
+pomodorino = 'pomodorino:gui.main'
+
+[tool.poetry.dependencies]
+python = "^3.5"
+pycairo = "^1.18"
+PyGObject = "^3.34"
+notify2 = "^0.3.1"
+dbus-python = "^1.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^3.4"
+
