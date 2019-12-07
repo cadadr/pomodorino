@@ -198,6 +198,61 @@ class Window(Gtk.ApplicationWindow):
         self.level.set_value(self.app.time_elapsed)
 
 
+
+class Settings(Gtk.Window):
+
+    def __init__(self, *args, **kwargs):
+        Gtk.Window.__init__(self, *args, **kwargs)
+        self.app = kwargs['application']
+        self.setup()
+
+
+    def setup(self):
+        self.set_modal(True)
+
+        self.grid = Gtk.Grid()
+        self.grid.set_row_spacing(10)
+        self.grid.set_column_spacing(10)
+
+        self.grid_row = 0
+
+        self.pomodoro_spinner = self.make_time_spinner_and_attach(
+            "Pomodoro length (minutes):", States.POMODORO)
+        self.short_break_spinner = self.make_time_spinner_and_attach(
+            "Short break length (minutes):", States.SHORT_BREAK)
+        self.long_break_spinner = self.make_time_spinner_and_attach(
+            "Long break length (minutes):", States.LONG_BREAK)
+
+        self.done_button = Gtk.Button.new_with_mnemonic(label="_Done")
+        self.done_button.connect("clicked", lambda _: self.close())
+        self.grid.attach(self.done_button, 3, self.grid_row, 1, 1)
+
+        self.add(self.grid)
+
+        self.set_resizable(False)
+
+        self.show_all()
+
+
+    def make_time_spinner_and_attach(self, label, state):
+        self.grid.attach(Gtk.Label(label=label), 0, self.grid_row, 2, 1)
+
+        minutes, _ = divmod(PHASE_SECONDS[state], 60)
+        spinner = Gtk.SpinButton.new_with_range(1.0, 6000.0, 1.0)
+
+        spinner.set_value(minutes)
+        spinner.set_digits(0)
+        spinner.set_snap_to_ticks(True)
+        spinner.set_update_policy(Gtk.SpinButtonUpdatePolicy.IF_VALID)
+
+        spinner.connect("value_changed", lambda x: self.app.on_minutes_adjusted(x, state))
+
+        self.grid.attach(spinner, 3, self.grid_row, 1, 1)
+        self.grid_row += 1
+
+        return spinner
+
+
 class App(Gtk.Application):
 
     app_id = "com.gkayaalp.pomodorino"
@@ -327,7 +382,16 @@ class App(Gtk.Application):
 
 
     def on_settings(self, action, param):
-        pass
+        settings_popup = Settings(transient_for=self.window,
+                                   title="Pomodorino Settings",
+                                   application=self)
+        settings_popup.present()
+
+
+    def on_minutes_adjusted(self, action, param):
+        value = action.get_value_as_int()
+        PHASE_SECONDS[param] = value * 60
+        self.window.update(None)
 
 
     def on_reset(self, action, param):
