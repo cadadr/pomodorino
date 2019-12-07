@@ -30,6 +30,8 @@ from gi.repository import Gtk, Gio, GLib, GdkPixbuf
 
 import notify2
 
+VERSION = "0.1.0-alpha"
+
 @unique
 class States(Enum):
     INITIAL = 1
