@@ -21,11 +21,12 @@
 """
 
 from enum import Enum, unique
+import os
 import sys
 
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gio, GLib
+from gi.repository import Gtk, Gio, GLib, GdkPixbuf
 
 import notify2
 
@@ -209,6 +210,9 @@ class App(Gtk.Application):
         self.timer_seconds = PHASE_SECONDS[self.state]
         self.time_elapsed = 0
 
+        logo_path = os.path.join(os.path.dirname(__file__), "../assets/logo.png")
+        self.logo = GdkPixbuf.Pixbuf.new_from_file_at_scale(logo_path, 64, 64, True)
+
         notify2.init(self.app_id)
 
 
@@ -239,6 +243,7 @@ class App(Gtk.Application):
     def do_activate(self):
         if not self.window:
             self.window = Window(application=self, title=self.title)
+        self.window.set_default_icon(self.logo)
         self.window.present()
 
 
