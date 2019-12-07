@@ -214,7 +214,7 @@ class Settings(Gtk.Window):
         self.grid = Gtk.Grid()
         self.grid.set_row_spacing(10)
         self.grid.set_column_spacing(10)
-
+        # This is incremented by self.add_control().
         self.grid_row = 0
 
         self.pomodoro_spinner = self.make_time_spinner_and_attach(
@@ -224,9 +224,20 @@ class Settings(Gtk.Window):
         self.long_break_spinner = self.make_time_spinner_and_attach(
             "Long break length (minutes):", States.LONG_BREAK)
 
+        self.add_label("Desktop notifications:")
+        self.suppress_desktop_notifs_switch = Gtk.Switch()
+        self.suppress_desktop_notifs_switch.set_active(
+            not self.app.suppress_desktop_notifications)
+        self.suppress_desktop_notifs_switch.connect(
+            "state_set", lambda x, y: self.app.on_suppress_desktop_notifs_switch_set(x, y)
+        )
+        # Don’t expand to fill:
+        self.suppress_desktop_notifs_switch.set_halign(Gtk.Align.CENTER)
+        self.add_control(self.suppress_desktop_notifs_switch)
+
         self.done_button = Gtk.Button.new_with_mnemonic(label="_Done")
         self.done_button.connect("clicked", lambda _: self.close())
-        self.grid.attach(self.done_button, 3, self.grid_row, 1, 1)
+        self.add_control(self.done_button)
 
         self.add(self.grid)
 
@@ -235,8 +246,19 @@ class Settings(Gtk.Window):
         self.show_all()
 
 
-    def make_time_spinner_and_attach(self, label, state):
-        self.grid.attach(Gtk.Label(label=label), 0, self.grid_row, 2, 1)
+    def add_label(self, text):
+        label = Gtk.Label(label=text)
+        label.set_halign(Gtk.Align.START)
+        self.grid.attach(label, 0, self.grid_row, 2, 1)
+
+
+    def add_control(self, control):
+        self.grid.attach(control, 3, self.grid_row, 1, 1)
+        self.grid_row += 1
+
+
+    def make_time_spinner_and_attach(self, text, state):
+        self.add_label(text)
 
         minutes, _ = divmod(PHASE_SECONDS[state], 60)
         spinner = Gtk.SpinButton.new_with_range(1.0, 6000.0, 1.0)
@@ -248,8 +270,7 @@ class Settings(Gtk.Window):
 
         spinner.connect("value_changed", lambda x: self.app.on_minutes_adjusted(x, state))
 
-        self.grid.attach(spinner, 3, self.grid_row, 1, 1)
-        self.grid_row += 1
+        self.add_control(spinner)
 
         return spinner
 
@@ -268,6 +289,7 @@ class App(Gtk.Application):
         self.pomodoro_count = 0
         self.timer_seconds = PHASE_SECONDS[self.state]
         self.time_elapsed = 0
+        self.suppress_desktop_notifications = False
 
         logo_path = os.path.join(os.path.dirname(__file__), "../assets/logo.png")
         self.logo = GdkPixbuf.Pixbuf.new_from_file_at_scale(logo_path, 64, 64, True)
@@ -357,8 +379,7 @@ class App(Gtk.Application):
             message = message.format(self.break_kind())
         if self.timer_seconds > 0:
             self.current_timer = GLib.timeout_add(1000, self.tick)
-        n = notify2.Notification(self.title, message)
-        n.show()
+        self.send_desktop_notification(message)
 
 
     def tick(self):
@@ -368,18 +389,25 @@ class App(Gtk.Application):
             self.advance_state()
             if self.state == States.AFTER_POMODORO:
                 self.pomodoro_count += 1
-                n = notify2.Notification(self.title, "Completed pomodoro!")
+                self.send_desktop_notification("Completed pomodoro!")
                 n.show()
             elif self.state == States.AFTER_BREAK:
-                n = notify2.Notification(self.title, "Completed {} break!".format(
-                    self.break_kind()))
-                n.show()
+                self.send_desktop_notification(
+                    "Completed {} break!".format(self.break_kind()))
             self.window.update(None)
             return False
         else:
             self.time_elapsed += 1
             self.window.update(None)
             return True
+
+
+    def send_desktop_notification(self, message):
+        if not self.suppress_desktop_notifications:
+            n = notify2.Notification(self.title, message)
+            n.show()
+        else:
+            print("Suppressed desktop notification:", message)
 
 
     def on_settings(self, action, param):
@@ -393,6 +421,10 @@ class App(Gtk.Application):
         value = action.get_value_as_int()
         PHASE_SECONDS[param] = value * 60
         self.window.update(None)
+
+
+    def on_suppress_desktop_notifs_switch_set(self, action, param):
+        self.suppress_desktop_notifications = not param
 
 
     def on_reset(self, action, param):
