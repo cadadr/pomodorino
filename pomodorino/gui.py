@@ -357,6 +357,18 @@ class App(Gtk.Application):
 
     def on_about(self, action, param):
         about_dialog = Gtk.AboutDialog(transient_for=self.window, modal=True)
+        about_dialog.set_authors(["Göktuğ Kayaalp <self@gkayaalp.com>"])
+        about_dialog.set_comments("Simple Pomodoro Timer.")
+        about_dialog.set_copyright("Copyright (C) 2019 Göktuğ Kayaalp <self@gkayaalp.com>")
+        about_dialog.set_license_type(Gtk.License.GPL_3_0)
+        about_dialog.set_website("https://www.gkayaalp.com/pomodorino.html")
+        about_dialog.set_website_label("Website: {}".format(
+            about_dialog.get_website()))
+        about_dialog.set_program_name(self.app_name)
+        about_dialog.set_version(VERSION)
+        # about_dialog.set_documenters(...)
+        # about_dialog.set_translator_credits(...)
+        # about_dialog.set_artists(...)
         about_dialog.present()
 
 
