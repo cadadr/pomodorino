@@ -21,6 +21,8 @@
 """
 
 from enum import Enum, unique
+
+import copy
 import os
 import sys
 
@@ -63,7 +65,7 @@ BUTTON_LABELS = {
     States.AFTER_BREAK: MULTI_BUTTON_START,
 }
 
-PHASE_SECONDS = {
+PHASE_SECONDS_DEFAULTS = {
     States.INITIAL: 0,
     States.POMODORO: 25 * 60,
     States.AFTER_POMODORO: 0,
@@ -71,6 +73,9 @@ PHASE_SECONDS = {
     States.LONG_BREAK: 15 * 60,
     States.AFTER_BREAK: 0,
 }
+
+SUPPRESS_DESKTOP_NOTIFICATIONS_DEFAULT = False
+
 
 class Window(Gtk.ApplicationWindow):
 
@@ -128,7 +133,7 @@ class Window(Gtk.ApplicationWindow):
             x = self.app.timer_seconds
 
         if x == 0:
-            x = PHASE_SECONDS[self.app.next_state()]
+            x = self.app.phase_seconds[self.app.next_state()]
         return ("%02d : %02d" % divmod(x, 60))
 
 
@@ -226,14 +231,21 @@ class Settings(Gtk.Window):
 
         self.add_label("Desktop notifications:")
         self.suppress_desktop_notifs_switch = Gtk.Switch()
-        self.suppress_desktop_notifs_switch.set_active(
-            not self.app.suppress_desktop_notifications)
         self.suppress_desktop_notifs_switch.connect(
             "state_set", lambda x, y: self.app.on_suppress_desktop_notifs_switch_set(x, y)
         )
         # Don’t expand to fill:
         self.suppress_desktop_notifs_switch.set_halign(Gtk.Align.CENTER)
         self.add_control(self.suppress_desktop_notifs_switch)
+
+        self.defaults_button = Gtk.Button.new_with_mnemonic(label="De_faults")
+        self.defaults_button.connect("clicked", lambda x: self.app.on_defaults(x, None))
+        self.grid.attach(self.defaults_button, 1, self.grid_row, 1, 1)
+
+        self.undo_button = Gtk.Button.new_with_mnemonic(label="_Undo")
+        self.undo_button.connect(
+            "clicked", lambda x: self.app.on_settings_undone(x, None))
+        self.grid.attach(self.undo_button, 0, self.grid_row, 1, 1)
 
         self.done_button = Gtk.Button.new_with_mnemonic(label="_Done")
         self.done_button.connect("clicked", lambda _: self.close())
@@ -242,6 +254,8 @@ class Settings(Gtk.Window):
         self.add(self.grid)
 
         self.set_resizable(False)
+
+        self.update()
 
         self.show_all()
 
@@ -260,10 +274,8 @@ class Settings(Gtk.Window):
     def make_time_spinner_and_attach(self, text, state):
         self.add_label(text)
 
-        minutes, _ = divmod(PHASE_SECONDS[state], 60)
         spinner = Gtk.SpinButton.new_with_range(1.0, 6000.0, 1.0)
 
-        spinner.set_value(minutes)
         spinner.set_digits(0)
         spinner.set_snap_to_ticks(True)
         spinner.set_update_policy(Gtk.SpinButtonUpdatePolicy.IF_VALID)
@@ -273,6 +285,18 @@ class Settings(Gtk.Window):
         self.add_control(spinner)
 
         return spinner
+
+
+    def update(self):
+        def f(x):
+            minutes, _ = divmod(x, 60)
+            return minutes
+
+        self.pomodoro_spinner.set_value(f(self.app.phase_seconds[States.POMODORO]))
+        self.short_break_spinner.set_value(f(self.app.phase_seconds[States.SHORT_BREAK]))
+        self.long_break_spinner.set_value(f(self.app.phase_seconds[States.LONG_BREAK]))
+        self.suppress_desktop_notifs_switch.set_active(
+            not self.app.suppress_desktop_notifications)
 
 
 class App(Gtk.Application):
@@ -287,9 +311,10 @@ class App(Gtk.Application):
         self.previous_state = None
         self.state = States.INITIAL
         self.pomodoro_count = 0
-        self.timer_seconds = PHASE_SECONDS[self.state]
+        self.phase_seconds = copy.deepcopy(PHASE_SECONDS_DEFAULTS)
+        self.timer_seconds = self.phase_seconds[self.state]
         self.time_elapsed = 0
-        self.suppress_desktop_notifications = False
+        self.suppress_desktop_notifications = SUPPRESS_DESKTOP_NOTIFICATIONS_DEFAULT
 
         logo_path = os.path.join(os.path.dirname(__file__), "../assets/logo.png")
         self.logo = GdkPixbuf.Pixbuf.new_from_file_at_scale(logo_path, 64, 64, True)
@@ -363,7 +388,7 @@ class App(Gtk.Application):
     def advance_state(self):
         self.previous_state = self.state
         self.state = self.next_state()
-        self.timer_seconds = PHASE_SECONDS[self.state]
+        self.timer_seconds = self.phase_seconds[self.state]
         self.time_elapsed = 0
 
 
@@ -411,20 +436,34 @@ class App(Gtk.Application):
 
 
     def on_settings(self, action, param):
-        settings_popup = Settings(transient_for=self.window,
-                                   title="Pomodorino Settings",
-                                   application=self)
-        settings_popup.present()
+        self.pre_settings_record = (
+            copy.deepcopy(self.phase_seconds), self.suppress_desktop_notifications
+        )
+        self.settings_popup = Settings(transient_for=self.window,
+                                       title="Pomodorino Settings",
+                                       application=self)
+        self.settings_popup.present()
+
+
+    def on_settings_undone(self, action, param):
+        self.phase_seconds, self.suppress_desktop_notifications = self.pre_settings_record
+        self.settings_popup.update()
 
 
     def on_minutes_adjusted(self, action, param):
         value = action.get_value_as_int()
-        PHASE_SECONDS[param] = value * 60
+        self.phase_seconds[param] = value * 60
         self.window.update(None)
 
 
     def on_suppress_desktop_notifs_switch_set(self, action, param):
         self.suppress_desktop_notifications = not param
+
+
+    def on_defaults(self, action, param):
+        self.phase_seconds = copy.deepcopy(PHASE_SECONDS_DEFAULTS)
+        self.suppress_desktop_notifications = SUPPRESS_DESKTOP_NOTIFICATIONS_DEFAULT
+        self.settings_popup.update()
 
 
     def on_reset(self, action, param):
@@ -442,7 +481,7 @@ class App(Gtk.Application):
             GLib.source_remove(self.current_timer)
         self.time_elapsed = 0
         self.state = self.previous_state
-        self.timer_seconds = PHASE_SECONDS[self.state]
+        self.timer_seconds = self.phase_seconds[self.state]
         self.window.update(None)
 
 
