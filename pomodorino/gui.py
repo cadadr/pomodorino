@@ -376,10 +376,10 @@ class App(Gtk.Application):
         self.quit()
 
 
-def main(argv):
+def main():
     app = App()
-    app.run(argv)
+    app.run(sys.argv)
 
 
 if __name__ == '__main__':
-    main(sys.argv)
+    main()
