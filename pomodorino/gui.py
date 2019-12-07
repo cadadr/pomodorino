@@ -415,7 +415,6 @@ class App(Gtk.Application):
             if self.state == States.AFTER_POMODORO:
                 self.pomodoro_count += 1
                 self.send_desktop_notification("Completed pomodoro!")
-                n.show()
             elif self.state == States.AFTER_BREAK:
                 self.send_desktop_notification(
                     "Completed {} break!".format(self.break_kind()))
