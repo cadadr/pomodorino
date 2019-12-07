@@ -294,6 +294,7 @@ class App(Gtk.Application):
         self.window.update(None)
         self.start_timer()
 
+
     def start_timer(self):
         message = STATE_LABELS[self.previous_state]
         if self.previous_state == States.AFTER_POMODORO:
