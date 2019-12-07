@@ -209,6 +209,7 @@ class Settings(Gtk.Window):
 
     def setup(self):
         self.set_modal(True)
+        self.set_border_width(20)
 
         self.grid = Gtk.Grid()
         self.grid.set_row_spacing(10)
