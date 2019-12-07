@@ -20,6 +20,7 @@ is a registered trademark of Francesco Cirillo).
 - Python 3
 - [PyGObject](https://pygobject.readthedocs.io/en/latest/)
 - [notify2](https://pypi.org/project/notify2/)
+- [dbus-python](https://pypi.org/project/dbus-python/)
 
 ## Installation
 
