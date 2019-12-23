@@ -37,6 +37,8 @@ import notify2
 
 VERSION = "0.1.0-alpha"
 
+CLOCK_RESOLUTION = 1000
+
 @unique
 class States(Enum):
     INITIAL = 1
@@ -464,7 +466,7 @@ class App(Gtk.Application):
         if self.previous_state == States.AFTER_POMODORO:
             message = message.format(self.break_kind())
         if self.timer_seconds > 0:
-            self.current_timer = GLib.timeout_add(1000, self.tick)
+            self.current_timer = GLib.timeout_add(CLOCK_RESOLUTION, self.tick)
         self.paused = False
         self.send_desktop_notification(message)
 
