@@ -114,52 +114,25 @@ class Window(Gtk.ApplicationWindow):
         self.setup()
 
 
-    def get_state_label(self):
-        l = STATE_LABELS[self.app.state]
-        if self.app.state == States.AFTER_POMODORO:
-            l = l.format(self.app.break_kind())
-        return l
-
-
-    def get_button_label(self):
-        return BUTTON_LABELS[self.app.state]
-
-
-    # We parameterise x so that there can be only one place where the
-    # timer string is generated.  Otherwise, self.update() has to do
-    # it too, and that results in inconsistencies.
-    #
-    # It’s sad that you can’t refer to self within the argument list;
-    # that’s why I needed the first if clause.
-    def get_timer_label(self, x = None):
-        if not x:
-            x = self.app.timer_seconds
-
-        if x == 0:
-            x = self.app.phase_seconds[self.app.next_state()]
-        return ("%02d : %02d" % divmod(x, 60))
-
-
-    def get_pomodoro_count_label(self):
-        return "Pomodoros completed: {}".format(self.app.pomodoro_count)
-
-
     def setup(self):
         self.vbox = Gtk.VBox(spacing = 20)
-        self.state_label = Gtk.Label(label=self.get_state_label())
-        self.timer_label = Gtk.Label(label=self.get_timer_label())
-        self.pomodoro_count_label = Gtk.Label(label=self.get_pomodoro_count_label())
+        self.state_label = Gtk.Label(label=self.app.get_state_label())
+        self.timer_label = Gtk.Label(label=self.app.get_timer_label())
+        self.pomodoro_count_label = Gtk.Label(label=self.app.get_pomodoro_count_label())
         self.level = Gtk.LevelBar()
         self.action_bar = Gtk.ActionBar()
-        self.multi_button = Gtk.Button(label=self.get_button_label(), use_underline=True)
+        self.multi_button = Gtk.Button(label=self.app.get_multi_button_label(),
+                                       use_underline=True)
         self.pause_button = Gtk.ToggleButton(label="_Pause", use_underline=True)
         self.menu_button = Gtk.MenuButton()
         self.menu = Gtk.Builder.new_from_string(self.MENU_XML, -1).get_object("app-menu")
         self.popup = Gtk.Menu.new_from_model(self.menu)
 
-        self.multi_button.connect("clicked", lambda x: self.on_multi_button(x, None))
+        self.multi_button.connect("clicked", lambda x: self.app.on_multi(x, None))
         self.pause_button.connect("toggled", lambda x: self.app.on_pause(x, None))
+
         self.connect("destroy", self.app.on_window_destroyed)
+        self.connect("delete-event", self.app.on_window_destroyed)
 
         self.add(self.vbox)
         self.vbox.set_margin_top(10)
@@ -184,25 +157,18 @@ class Window(Gtk.ApplicationWindow):
         self.show_all()
 
 
-    def on_multi_button(self, action, param=None):
-        if action.get_label() == MULTI_BUTTON_START:
-            self.app.on_advance(action, param)
-        else:
-            self.app.on_cancel(action, param)
-
-
     def update(self):
-        self.state_label.set_label(self.get_state_label())
-        self.multi_button.set_label(self.get_button_label())
+        self.state_label.set_label(self.app.get_state_label())
+        self.multi_button.set_label(self.app.get_multi_button_label())
         if self.app.time_elapsed == 0:
-            self.timer_label.set_label(self.get_timer_label())
+            self.timer_label.set_label(self.app.get_timer_label())
             self.pause_button.set_sensitive(False)
         else:
             self.timer_label.set_label(
-                self.get_timer_label(self.app.timer_seconds - self.app.time_elapsed)
+                self.app.get_timer_label(self.app.timer_seconds - self.app.time_elapsed)
             )
             self.pause_button.set_sensitive(True)
-        self.pomodoro_count_label.set_label(self.get_pomodoro_count_label())
+        self.pomodoro_count_label.set_label(self.app.get_pomodoro_count_label())
         self.level.set_max_value(self.app.timer_seconds)
         self.level.set_value(self.app.time_elapsed)
 
@@ -315,27 +281,62 @@ class Indicator:
             self.app.app_id, self.app.logo_path,
             AppIndicator3.IndicatorCategory.APPLICATION_STATUS
         )
+
+        self.menu = None
+        self.build_menu()
+
         self.i.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
-        self.i.set_menu(self.build_menu())
+        self.i.set_menu(self.menu)
+
+        self.update()
 
 
     def build_menu(self):
-        menu = Gtk.Menu()
+        self.menu = Gtk.Menu()
 
-        cancel = Gtk.MenuItem('Cancel')
-        cancel.connect('activate', self.app.on_cancel)
+        self.menu_multi = Gtk.MenuItem.new_with_mnemonic(self.app.get_multi_button_label())
+        self.menu_multi.connect('activate', self.app.on_multi)
 
-        reset = Gtk.MenuItem('Reset')
-        reset.connect('activate', self.app.on_reset)
+        self.menu_pause = Gtk.MenuItem("Pause")
+        self.menu_pause.connect('activate', self.app.on_pause_from_menu)
 
-        _quit = Gtk.MenuItem('Quit')
-        _quit.connect('activate', self.app.on_quit)
+        self.menu_reset = Gtk.MenuItem('Reset')
+        self.menu_reset.connect('activate', self.app.on_reset)
 
-        menu.append(cancel)
-        menu.append(reset)
-        menu.append(_quit)
-        menu.show_all()
-        return menu
+        self.menu_settings = Gtk.MenuItem('Settings')
+        self.menu_settings.connect('activate', self.app.on_settings)
+
+        self.menu_quit = Gtk.MenuItem('Quit')
+        self.menu_quit.connect('activate', self.app.on_quit)
+
+        self.menu_about = Gtk.MenuItem('About')
+        self.menu_about.connect('activate', self.app.on_about)
+
+        self.menu_show_window = Gtk.MenuItem('Show Window')
+        self.menu_show_window.connect('activate', self.app.on_show_window)
+
+        self.menu.append(self.menu_multi)
+        self.menu.append(self.menu_pause)
+        self.menu.append(self.menu_reset)
+        self.menu.append(self.menu_settings)
+        self.menu.append(self.menu_quit)
+        self.menu.append(self.menu_about)
+        self.menu.append(self.menu_show_window)
+
+        self.menu.show_all()
+
+
+    def update(self):
+        self.menu_multi.set_label(self.app.get_multi_button_label())
+        self.menu_show_window.set_sensitive(not self.app.window.get_visible())
+        if self.app.time_elapsed == 0:
+            self.menu_pause.set_sensitive(False)
+        else:
+            self.menu_pause.set_sensitive(True)
+        if self.app.paused:
+            self.menu_pause.set_label("Unpause")
+        else:
+            self.menu_pause.set_label("Pause")
 
 
 class App(Gtk.Application):
@@ -348,7 +349,9 @@ class App(Gtk.Application):
         self.title = self.app_name
         self.window = None
         self.indicator = None
+        self.current_timer = None
         self.previous_state = None
+        self.paused = False
         self.state = States.INITIAL
         self.pomodoro_count = 0
         self.phase_seconds = copy.deepcopy(PHASE_SECONDS_DEFAULTS)
@@ -439,6 +442,7 @@ class App(Gtk.Application):
 
     def on_advance(self, action, param=None):
         self.advance_state()
+        self.indicator.update()
         self.window.update()
         self.start_timer()
 
@@ -449,6 +453,7 @@ class App(Gtk.Application):
             message = message.format(self.break_kind())
         if self.timer_seconds > 0:
             self.current_timer = GLib.timeout_add(1000, self.tick)
+        self.paused = False
         self.send_desktop_notification(message)
 
 
@@ -463,10 +468,12 @@ class App(Gtk.Application):
             elif self.state == States.AFTER_BREAK:
                 self.send_desktop_notification(
                     "Completed {} break!".format(self.break_kind()))
+            self.indicator.update()
             self.window.update()
             return False
         else:
             self.time_elapsed += 1
+            self.indicator.update()
             self.window.update()
             return True
 
@@ -497,6 +504,7 @@ class App(Gtk.Application):
     def on_minutes_adjusted(self, action, param=None):
         value = action.get_value_as_int()
         self.phase_seconds[param] = value * 60
+        self.indicator.update()
         self.window.update()
 
 
@@ -517,6 +525,7 @@ class App(Gtk.Application):
         self.timer_seconds = 0
         self.time_elapsed = 0
         self.pomodoro_count = 0
+        self.indicator.update()
         self.window.update()
 
 
@@ -526,14 +535,23 @@ class App(Gtk.Application):
         self.time_elapsed = 0
         self.state = self.previous_state
         self.timer_seconds = self.phase_seconds[self.state]
+        self.indicator.update()
         self.window.update()
 
 
     def on_pause(self, action, param=None):
         if action.get_active() and self.current_timer:
             GLib.source_remove(self.current_timer)
+            self.current_timer = None
+            self.paused = True
         else:
             self.start_timer()
+        self.indicator.update()
+
+
+    def on_pause_from_menu(self, action, param=None):
+        self.window.pause_button.set_active(not self.paused)
+        self.indicator.update()
 
 
     def on_about(self, action, param=None):
@@ -555,11 +573,56 @@ class App(Gtk.Application):
 
     def on_window_destroyed(self, action, param=None):
         self.window.hide()
+        self.indicator.update()
+        return True             # Don’t destroy the window
+
+
+    def on_show_window(self, action, param=None):
+        self.window.show()
+        self.indicator.update()
+
+
+    def on_multi(self, action, param=None):
+        if action.get_label() == MULTI_BUTTON_START:
+            self.on_advance(action, param)
+        else:
+            self.on_cancel(action, param)
 
 
     def on_quit(self, action, param=None):
         self.release()
         self.quit()
+
+
+    def get_multi_button_label(self):
+        return BUTTON_LABELS[self.state]
+
+
+    def get_state_label(self):
+        l = STATE_LABELS[self.state]
+        if self.state == States.AFTER_POMODORO:
+            l = l.format(self.break_kind())
+        return l
+
+    # We parameterise x so that there can be only one place where the
+    # timer string is generated.  Otherwise, Window.update() has to do
+    # it too, and that results in inconsistencies.
+    #
+    # It’s sad that you can’t refer to self within the argument list;
+    # that’s why I needed the first if clause.
+    def get_timer_label(self, x = None):
+        if not x:
+            x = self.timer_seconds
+
+        if x == 0:
+            x = self.phase_seconds[self.next_state()]
+        return ("%02d : %02d" % divmod(x, 60))
+
+
+    def get_pomodoro_count_label(self):
+        return "Pomodoros completed: {}".format(self.pomodoro_count)
+
+
 
 
 def main():
