@@ -27,8 +27,11 @@ import os
 import sys
 
 import gi
+
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gio, GLib, GdkPixbuf
+gi.require_version('AppIndicator3', '0.1')
+
+from gi.repository import Gtk, Gio, GLib, GdkPixbuf, AppIndicator3
 
 import notify2
 
@@ -156,6 +159,7 @@ class Window(Gtk.ApplicationWindow):
 
         self.multi_button.connect("clicked", lambda x: self.on_multi_button(x, None))
         self.pause_button.connect("toggled", lambda x: self.app.on_pause(x, None))
+        self.connect("destroy", self.app.on_window_destroyed)
 
         self.add(self.vbox)
         self.vbox.set_margin_top(10)
@@ -180,7 +184,7 @@ class Window(Gtk.ApplicationWindow):
         self.show_all()
 
 
-    def on_multi_button(self, action, param):
+    def on_multi_button(self, action, param=None):
         if action.get_label() == MULTI_BUTTON_START:
             self.app.on_advance(action, param)
         else:
@@ -299,6 +303,41 @@ class Settings(Gtk.Window):
             not self.app.suppress_desktop_notifications)
 
 
+
+# This can’t be a subclass of AppIndicator3.Indicator because the damn
+# thing keeps crashing w/ fucking segfault when I try to pass in the
+# App instance.
+class Indicator:
+
+    def __init__(self, *args, **kwargs):
+        self.app = kwargs["application"]
+        self.i = AppIndicator3.Indicator.new(
+            self.app.app_id, self.app.logo_path,
+            AppIndicator3.IndicatorCategory.APPLICATION_STATUS
+        )
+        self.i.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
+        self.i.set_menu(self.build_menu())
+
+
+    def build_menu(self):
+        menu = Gtk.Menu()
+
+        cancel = Gtk.MenuItem('Cancel')
+        cancel.connect('activate', self.app.on_cancel)
+
+        reset = Gtk.MenuItem('Reset')
+        reset.connect('activate', self.app.on_reset)
+
+        _quit = Gtk.MenuItem('Quit')
+        _quit.connect('activate', self.app.on_quit)
+
+        menu.append(cancel)
+        menu.append(reset)
+        menu.append(_quit)
+        menu.show_all()
+        return menu
+
+
 class App(Gtk.Application):
 
     app_id = "com.gkayaalp.pomodorino"
@@ -308,6 +347,7 @@ class App(Gtk.Application):
         super().__init__(*args, application_id=self.app_id, **kwargs)
         self.title = self.app_name
         self.window = None
+        self.indicator = None
         self.previous_state = None
         self.state = States.INITIAL
         self.pomodoro_count = 0
@@ -316,8 +356,8 @@ class App(Gtk.Application):
         self.time_elapsed = 0
         self.suppress_desktop_notifications = SUPPRESS_DESKTOP_NOTIFICATIONS_DEFAULT
 
-        logo_path = os.path.join(os.path.dirname(__file__), "../assets/logo.png")
-        self.logo = GdkPixbuf.Pixbuf.new_from_file_at_scale(logo_path, 64, 64, True)
+        self.logo_path = os.path.join(os.path.dirname(__file__), "../assets/logo.png")
+        self.logo = GdkPixbuf.Pixbuf.new_from_file_at_scale(self.logo_path, 64, 64, True)
 
         notify2.init(self.app_id)
 
@@ -350,7 +390,12 @@ class App(Gtk.Application):
         if not self.window:
             self.window = Window(application=self, title=self.title)
         self.window.set_default_icon(self.logo)
+
+        if not self.indicator:
+            self.indicator = Indicator(application=self)
+
         self.window.present()
+        self.hold()
 
 
     def next_state(self):
@@ -392,7 +437,7 @@ class App(Gtk.Application):
         self.time_elapsed = 0
 
 
-    def on_advance(self, action, param):
+    def on_advance(self, action, param=None):
         self.advance_state()
         self.window.update(None)
         self.start_timer()
@@ -434,7 +479,7 @@ class App(Gtk.Application):
             print("Suppressed desktop notification:", message)
 
 
-    def on_settings(self, action, param):
+    def on_settings(self, action, param=None):
         self.pre_settings_record = (
             copy.deepcopy(self.phase_seconds), self.suppress_desktop_notifications
         )
@@ -444,28 +489,28 @@ class App(Gtk.Application):
         self.settings_popup.present()
 
 
-    def on_settings_undone(self, action, param):
+    def on_settings_undone(self, action, param=None):
         self.phase_seconds, self.suppress_desktop_notifications = self.pre_settings_record
         self.settings_popup.update()
 
 
-    def on_minutes_adjusted(self, action, param):
+    def on_minutes_adjusted(self, action, param=None):
         value = action.get_value_as_int()
         self.phase_seconds[param] = value * 60
         self.window.update(None)
 
 
-    def on_suppress_desktop_notifs_switch_set(self, action, param):
+    def on_suppress_desktop_notifs_switch_set(self, action, param=None):
         self.suppress_desktop_notifications = not param
 
 
-    def on_defaults(self, action, param):
+    def on_defaults(self, action, param=None):
         self.phase_seconds = copy.deepcopy(PHASE_SECONDS_DEFAULTS)
         self.suppress_desktop_notifications = SUPPRESS_DESKTOP_NOTIFICATIONS_DEFAULT
         self.settings_popup.update()
 
 
-    def on_reset(self, action, param):
+    def on_reset(self, action, param=None):
         if self.current_timer:
             GLib.source_remove(self.current_timer)
         self.state = States.INITIAL
@@ -475,7 +520,7 @@ class App(Gtk.Application):
         self.window.update(None)
 
 
-    def on_cancel(self, action, param):
+    def on_cancel(self, action, param=None):
         if self.current_timer:
             GLib.source_remove(self.current_timer)
         self.time_elapsed = 0
@@ -484,14 +529,14 @@ class App(Gtk.Application):
         self.window.update(None)
 
 
-    def on_pause(self, action, param):
+    def on_pause(self, action, param=None):
         if action.get_active() and self.current_timer:
             GLib.source_remove(self.current_timer)
         else:
             self.start_timer()
 
 
-    def on_about(self, action, param):
+    def on_about(self, action, param=None):
         about_dialog = Gtk.AboutDialog(transient_for=self.window, modal=True)
         about_dialog.set_authors(["Göktuğ Kayaalp <self@gkayaalp.com>"])
         about_dialog.set_comments("Simple Pomodoro Timer.")
@@ -508,7 +553,12 @@ class App(Gtk.Application):
         about_dialog.present()
 
 
-    def on_quit(self, action, param):
+    def on_window_destroyed(self, action, param=None):
+        self.window.hide()
+
+
+    def on_quit(self, action, param=None):
+        self.release()
         self.quit()
 
 
