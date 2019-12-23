@@ -191,7 +191,7 @@ class Window(Gtk.ApplicationWindow):
             self.app.on_cancel(action, param)
 
 
-    def update(self, args):
+    def update(self):
         self.state_label.set_label(self.get_state_label())
         self.multi_button.set_label(self.get_button_label())
         if self.app.time_elapsed == 0:
@@ -439,7 +439,7 @@ class App(Gtk.Application):
 
     def on_advance(self, action, param=None):
         self.advance_state()
-        self.window.update(None)
+        self.window.update()
         self.start_timer()
 
 
@@ -463,11 +463,11 @@ class App(Gtk.Application):
             elif self.state == States.AFTER_BREAK:
                 self.send_desktop_notification(
                     "Completed {} break!".format(self.break_kind()))
-            self.window.update(None)
+            self.window.update()
             return False
         else:
             self.time_elapsed += 1
-            self.window.update(None)
+            self.window.update()
             return True
 
 
@@ -497,7 +497,7 @@ class App(Gtk.Application):
     def on_minutes_adjusted(self, action, param=None):
         value = action.get_value_as_int()
         self.phase_seconds[param] = value * 60
-        self.window.update(None)
+        self.window.update()
 
 
     def on_suppress_desktop_notifs_switch_set(self, action, param=None):
@@ -517,7 +517,7 @@ class App(Gtk.Application):
         self.timer_seconds = 0
         self.time_elapsed = 0
         self.pomodoro_count = 0
-        self.window.update(None)
+        self.window.update()
 
 
     def on_cancel(self, action, param=None):
@@ -526,7 +526,7 @@ class App(Gtk.Application):
         self.time_elapsed = 0
         self.state = self.previous_state
         self.timer_seconds = self.phase_seconds[self.state]
-        self.window.update(None)
+        self.window.update()
 
 
     def on_pause(self, action, param=None):
