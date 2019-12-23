@@ -286,6 +286,7 @@ class Indicator:
         self.build_menu()
 
         self.i.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
+        self.i.set_title(self.app.app_name)
         self.i.set_menu(self.menu)
 
         self.update()
@@ -293,6 +294,9 @@ class Indicator:
 
     def build_menu(self):
         self.menu = Gtk.Menu()
+
+        self.menu_progress = Gtk.MenuItem("")
+        self.menu_progress.set_sensitive(False)
 
         self.menu_multi = Gtk.MenuItem.new_with_mnemonic(self.app.get_multi_button_label())
         self.menu_multi.connect('activate', self.app.on_multi)
@@ -315,6 +319,7 @@ class Indicator:
         self.menu_show_window = Gtk.MenuItem('Show Window')
         self.menu_show_window.connect('activate', self.app.on_show_window)
 
+        self.menu.append(self.menu_progress)
         self.menu.append(self.menu_multi)
         self.menu.append(self.menu_pause)
         self.menu.append(self.menu_reset)
@@ -327,12 +332,19 @@ class Indicator:
 
 
     def update(self):
+        window_visible = self.app.window.get_visible()
+        progress_label = "{}/{} ({})".format(
+            self.app.get_timer_label(self.app.timer_seconds - self.app.time_elapsed),
+            self.app.get_timer_label(),
+            self.app.pomodoro_count
+        )
+
+        self.menu_progress.set_label(progress_label)
         self.menu_multi.set_label(self.app.get_multi_button_label())
-        self.menu_show_window.set_sensitive(not self.app.window.get_visible())
-        if self.app.time_elapsed == 0:
-            self.menu_pause.set_sensitive(False)
-        else:
-            self.menu_pause.set_sensitive(True)
+        self.menu_show_window.set_sensitive(not window_visible)
+
+        self.menu_pause.set_sensitive(not (self.app.time_elapsed == 0))
+
         if self.app.paused:
             self.menu_pause.set_label("Unpause")
         else:
