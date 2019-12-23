@@ -582,7 +582,10 @@ class App(Gtk.Application):
         # about_dialog.set_documenters(...)
         # about_dialog.set_translator_credits(...)
         # about_dialog.set_artists(...)
-        about_dialog.present()
+
+        # So this works for some reason...
+        about_dialog.run()
+        about_dialog.destroy()
 
 
     def on_window_destroyed(self, action, param=None):
