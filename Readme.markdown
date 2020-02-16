@@ -1,5 +1,7 @@
 # Pomodorino
 
+<img src="assets/logo.png" style="float:right;height:4.5em;"/>
+
 **WORK IN PROGRESS**
 
 Pomodorino is a lightweight, simple Pomodoro timer desktop application
@@ -39,7 +41,7 @@ tracker](https://github.com/cadadr/pomodorino/issues).
 Pomodorino is licenced under GPLv3 or later.
 
     Pomodorino --- Simple Pomodoro timer app
-    Copyright (C) 2019  Göktuğ Kayaalp <self at gkayaalp dot com>
+    Copyright (C) 2019, 2020  Göktuğ Kayaalp <self at gkayaalp dot com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
