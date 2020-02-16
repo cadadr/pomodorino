@@ -1,7 +1,5 @@
 # Pomodorino
 
-<img src="assets/logo.png" style="float:right;height:4.5em;"/>
-
 **WORK IN PROGRESS**
 
 Pomodorino is a lightweight, simple Pomodoro timer desktop application
