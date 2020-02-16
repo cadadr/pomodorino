@@ -1,5 +1,5 @@
 # Pomodorino --- Simple Pomodoro timer app
-# Copyright (C) 2019  Göktuğ Kayaalp <self at gkayaalp dot com>
+# Copyright (C) 2019, 2020  Göktuğ Kayaalp <self at gkayaalp dot com>
 #
 # This file is part of Pomodorino.
 #
@@ -16,6 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from pomodorino import gui
+from pomodorino import app
 
-__all__ = ['gui']
+__all__ = ['app']
