@@ -1,0 +1,142 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Göktuğ Kayaalp <self at gkayaalp dot com>
+# This file is distributed under the same license as the Pomodorino package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Pomodorino\n"
+"Report-Msgid-Bugs-To: <self at gkayaalp dot com>\n"
+"POT-Creation-Date: 2020-04-23 00:35+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: pomodorino/indicator.py:80
+msgid "About"
+msgstr ""
+
+#: pomodorino/app.py:160 pomodorino/app.py:162
+msgid "Completed pomodoro!"
+msgstr ""
+
+#: pomodorino/app.py:255 pomodorino/app.py:257
+msgid "Copyright (C) 2019, 2020 Göktuğ Kayaalp <self@gkayaalp.com>"
+msgstr ""
+
+#: pomodorino/settingsmodal.py:68
+msgid "De_faults"
+msgstr ""
+
+#: pomodorino/settingsmodal.py:59
+msgid "Desktop notifications:"
+msgstr ""
+
+#: pomodorino/common.py:44 pomodorino/common.py:47
+msgid "Long break in progress."
+msgstr ""
+
+#: pomodorino/settingsmodal.py:57
+msgid "Long break length (minutes):"
+msgstr ""
+
+#: pomodorino/indicator.py:113 pomodorino/indicator.py:68
+msgid "Pause"
+msgstr ""
+
+#: pomodorino/app.py:186 pomodorino/app.py:188
+msgid "Pomodorino Settings"
+msgstr ""
+
+#: pomodorino/app.py:97 pomodorino/app.py:99
+msgid "Pomodorino is ready!"
+msgstr ""
+
+#: pomodorino/common.py:41
+msgid "Pomodoro in progress."
+msgstr ""
+
+#: pomodorino/settingsmodal.py:53
+msgid "Pomodoro length (minutes):"
+msgstr ""
+
+#: pomodorino/app.py:317 pomodorino/app.py:319
+msgid "Pomodoros completed: {}"
+msgstr ""
+
+#: pomodorino/indicator.py:77
+msgid "Quit"
+msgstr ""
+
+#: pomodorino/indicator.py:71
+msgid "Reset"
+msgstr ""
+
+#: pomodorino/indicator.py:111
+msgid "Resume"
+msgstr ""
+
+#: pomodorino/indicator.py:74
+msgid "Settings"
+msgstr ""
+
+#: pomodorino/common.py:43 pomodorino/common.py:46
+msgid "Short break in progress."
+msgstr ""
+
+#: pomodorino/settingsmodal.py:55
+msgid "Short break length (minutes):"
+msgstr ""
+
+#: pomodorino/app.py:253 pomodorino/app.py:255
+msgid "Simple Pomodoro Timer."
+msgstr ""
+
+#: pomodorino/common.py:45 pomodorino/common.py:48
+msgid "Start New Pomodoro!"
+msgstr ""
+
+#: pomodorino/common.py:40
+msgid "Start Pomodoro!"
+msgstr ""
+
+#: pomodorino/common.py:44
+msgid "Start a long break"
+msgstr ""
+
+#: pomodorino/common.py:43
+msgid "Start a short break"
+msgstr ""
+
+#: pomodorino/common.py:42
+msgid "Start a {} break"
+msgstr ""
+
+#: pomodorino/app.py:178 pomodorino/app.py:180
+msgid "Suppressed desktop notification:"
+msgstr ""
+
+#: pomodorino/app.py:258 pomodorino/app.py:260
+msgid "Website: {}"
+msgstr ""
+
+#: pomodorino/common.py:49 pomodorino/common.py:52
+msgid "_Cancel"
+msgstr ""
+
+#: pomodorino/settingsmodal.py:77
+msgid "_Done"
+msgstr ""
+
+#: pomodorino/common.py:48 pomodorino/common.py:51
+msgid "_Start"
+msgstr ""
+
+#: pomodorino/settingsmodal.py:72
+msgid "_Undo"
+msgstr ""
