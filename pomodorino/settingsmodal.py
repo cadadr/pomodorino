@@ -20,6 +20,8 @@
 
 """
 
+from gettext import gettext as _
+
 import gi
 
 gi.require_version('Gtk', '3.0')
@@ -48,13 +50,13 @@ class SettingsModal(Gtk.Window):
         self.grid_row = 0
 
         self.pomodoro_spinner = self.make_time_spinner_and_attach(
-            "Pomodoro length (minutes):", States.POMODORO)
+            _("Pomodoro length (minutes):"), States.POMODORO)
         self.short_break_spinner = self.make_time_spinner_and_attach(
-            "Short break length (minutes):", States.SHORT_BREAK)
+            _("Short break length (minutes):"), States.SHORT_BREAK)
         self.long_break_spinner = self.make_time_spinner_and_attach(
-            "Long break length (minutes):", States.LONG_BREAK)
+            _("Long break length (minutes):"), States.LONG_BREAK)
 
-        self.add_label("Desktop notifications:")
+        self.add_label(_("Desktop notifications:"))
         self.suppress_desktop_notifs_switch = Gtk.Switch()
         self.suppress_desktop_notifs_switch.connect(
             "state_set", lambda x, y: self.app.on_suppress_desktop_notifs_switch_set(x, y)
@@ -63,16 +65,16 @@ class SettingsModal(Gtk.Window):
         self.suppress_desktop_notifs_switch.set_halign(Gtk.Align.CENTER)
         self.add_control(self.suppress_desktop_notifs_switch)
 
-        self.defaults_button = Gtk.Button.new_with_mnemonic(label="De_faults")
+        self.defaults_button = Gtk.Button.new_with_mnemonic(label=_("De_faults"))
         self.defaults_button.connect("clicked", lambda x: self.app.on_defaults(x, None))
         self.grid.attach(self.defaults_button, 1, self.grid_row, 1, 1)
 
-        self.undo_button = Gtk.Button.new_with_mnemonic(label="_Undo")
+        self.undo_button = Gtk.Button.new_with_mnemonic(label=_("_Undo"))
         self.undo_button.connect(
             "clicked", lambda x: self.app.on_settings_undone(x, None))
         self.grid.attach(self.undo_button, 0, self.grid_row, 1, 1)
 
-        self.done_button = Gtk.Button.new_with_mnemonic(label="_Done")
+        self.done_button = Gtk.Button.new_with_mnemonic(label=_("_Done"))
         self.done_button.connect("clicked", lambda _: self.close())
         self.add_control(self.done_button)
 

@@ -21,7 +21,7 @@
 """
 
 from enum import Enum, unique
-
+from gettext import gettext as _
 
 VERSION = "0.1.0-alpha"
 
@@ -36,18 +36,17 @@ class States(Enum):
     LONG_BREAK = 5
     AFTER_BREAK = 6
 
-# TODO(2019-12-06): internationalise
 STATE_LABELS = {
-    States.INITIAL: "Start Pomodoro!",
-    States.POMODORO: "Pomodoro in progress.",
-    States.AFTER_POMODORO: "Start a {} break",
-    States.SHORT_BREAK: "Short break in progress.",
-    States.LONG_BREAK: "Long break in progress.",
-    States.AFTER_BREAK: "Start New Pomodoro!",
+    States.INITIAL: _("Start Pomodoro!"),
+    States.POMODORO: _("Pomodoro in progress."),
+    States.AFTER_POMODORO: _("Start a {} break"),
+    States.SHORT_BREAK: _("Short break in progress."),
+    States.LONG_BREAK: _("Long break in progress."),
+    States.AFTER_BREAK: _("Start New Pomodoro!"),
 }
 
-MULTI_BUTTON_START = "_Start"
-MULTI_BUTTON_CANCEL = "_Cancel"
+MULTI_BUTTON_START = _("_Start")
+MULTI_BUTTON_CANCEL = _("_Cancel")
 
 BUTTON_LABELS = {
     States.INITIAL: MULTI_BUTTON_START,

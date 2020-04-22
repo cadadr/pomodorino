@@ -23,6 +23,7 @@
 import copy
 import os
 import sys
+from gettext import gettext as _
 
 import gi
 
@@ -56,7 +57,11 @@ class App(Gtk.Application):
         self.time_elapsed = 0
         self.suppress_desktop_notifications = SUPPRESS_DESKTOP_NOTIFICATIONS_DEFAULT
 
-        self.logo_path = os.path.join(os.path.dirname(__file__), "../assets/logo.png")
+        # Find the logo. ‘main’ lacks ‘__file__’ in interactive mode.
+        l = "../assets/logo.png"
+        self.logo_path = l if not hasattr(main, '__file__') \
+            else os.path.join(os.path.dirname(__file__), l)
+
         self.logo = GdkPixbuf.Pixbuf.new_from_file_at_scale(self.logo_path, 64, 64, True)
 
         notify2.init(self.app_id)
@@ -89,7 +94,7 @@ class App(Gtk.Application):
     def do_activate(self):
         if not self.indicator:
             self.indicator = Indicator(application=self)
-        self.send_desktop_notification("Pomodorino is ready!")
+        self.send_desktop_notification(_("Pomodorino is ready!"))
         self.hold()
 
 
@@ -110,8 +115,7 @@ class App(Gtk.Application):
 
         return States.AFTER_BREAK
 
-
-    def break_kind(self):
+    def break_message(self):
         n = None
         # In this case we’re already on a break state, so we don’t
         # need to peek ahead.
@@ -120,9 +124,9 @@ class App(Gtk.Application):
         else:
             n = self.next_state()
 
-        if n == States.LONG_BREAK:
-            return "long"
-        return "short"
+        return _(STATE_LABELS[self.previous_state].format(
+            "long" if n == States.LONG_BREAK else "short"
+        ))
 
 
     def advance_state(self):
@@ -139,9 +143,7 @@ class App(Gtk.Application):
 
 
     def start_timer(self):
-        message = STATE_LABELS[self.previous_state]
-        if self.previous_state == States.AFTER_POMODORO:
-            message = message.format(self.break_kind())
+        message = self.break_message()
         if self.timer_seconds > 0:
             self.current_timer = GLib.timeout_add(CLOCK_RESOLUTION, self.tick)
         self.paused = False
@@ -155,10 +157,10 @@ class App(Gtk.Application):
             self.advance_state()
             if self.state == States.AFTER_POMODORO:
                 self.pomodoro_count += 1
-                self.send_desktop_notification("Completed pomodoro!")
+                self.send_desktop_notification(_("Completed pomodoro!"))
             elif self.state == States.AFTER_BREAK:
                 self.send_desktop_notification(
-                    "Completed {} break!".format(self.break_kind()))
+                    self.break_message())
             self.indicator.update()
             return False
         else:
@@ -173,7 +175,7 @@ class App(Gtk.Application):
             n.set_icon_from_pixbuf(self.logo)
             n.show()
         else:
-            print("Suppressed desktop notification:", message)
+            print(_("Suppressed desktop notification:"), message)
 
 
     def on_settings(self, action, param=None):
@@ -181,7 +183,7 @@ class App(Gtk.Application):
             self.pre_settings_record = (
                 copy.deepcopy(self.phase_seconds), self.suppress_desktop_notifications
             )
-            self.settings_popup = SettingsModal(title="Pomodorino Settings",
+            self.settings_popup = SettingsModal(title=_("Pomodorino Settings"),
                                                 application=self)
             self.settings_popup.present()
             self.settings_popup.connect('destroy', self.on_settings)
@@ -248,12 +250,12 @@ class App(Gtk.Application):
               self.about_dialog = Gtk.AboutDialog()
               self.about_dialog.set_logo(self.logo)
               self.about_dialog.set_authors(["Göktuğ Kayaalp <self@gkayaalp.com>"])
-              self.about_dialog.set_comments("Simple Pomodoro Timer.")
+              self.about_dialog.set_comments(_("Simple Pomodoro Timer."))
               self.about_dialog.set_copyright(
-                  "Copyright (C) 2019, 2020 Göktuğ Kayaalp <self@gkayaalp.com>")
+                  _("Copyright (C) 2019, 2020 Göktuğ Kayaalp <self@gkayaalp.com>"))
               self.about_dialog.set_license_type(Gtk.License.GPL_3_0)
               self.about_dialog.set_website("https://www.gkayaalp.com/pomodorino.html")
-              self.about_dialog.set_website_label("Website: {}".format(
+              self.about_dialog.set_website_label(_("Website: {}").format(
                   self.about_dialog.get_website()))
               self.about_dialog.set_program_name(self.app_name)
               self.about_dialog.set_version(VERSION)
@@ -312,7 +314,7 @@ class App(Gtk.Application):
 
 
     def get_pomodoro_count_label(self):
-        return "Pomodoros completed: {}".format(self.pomodoro_count)
+        return _("Pomodoros completed: {}").format(self.pomodoro_count)
 
 
 

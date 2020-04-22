@@ -20,6 +20,8 @@
 
 """
 
+from gettext import gettext as _
+
 import gi
 
 gi.require_version('Gtk', '3.0')
@@ -66,16 +68,16 @@ class Indicator:
         self.menu_pause = Gtk.MenuItem("Pause")
         self.menu_pause.connect('activate', self.app.on_pause)
 
-        self.menu_reset = Gtk.MenuItem('Reset')
+        self.menu_reset = Gtk.MenuItem(_('Reset'))
         self.menu_reset.connect('activate', self.app.on_reset)
 
-        self.menu_settings = Gtk.MenuItem('Settings')
+        self.menu_settings = Gtk.MenuItem(_('Settings'))
         self.menu_settings.connect('activate', self.app.on_settings)
 
-        self.menu_quit = Gtk.MenuItem('Quit')
+        self.menu_quit = Gtk.MenuItem(_('Quit'))
         self.menu_quit.connect('activate', self.app.on_quit)
 
-        self.menu_about = Gtk.MenuItem('About')
+        self.menu_about = Gtk.MenuItem(_('About'))
         self.menu_about.connect('activate', self.app.on_about)
 
         self.menu.append(self.menu_progress)
@@ -106,6 +108,6 @@ class Indicator:
         self.menu_pause.set_sensitive(not (self.app.time_elapsed == 0))
 
         if self.app.paused:
-            self.menu_pause.set_label("Resume")
+            self.menu_pause.set_label(_("Resume"))
         else:
-            self.menu_pause.set_label("Pause")
+            self.menu_pause.set_label(_("Pause"))
