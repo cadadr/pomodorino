@@ -126,9 +126,9 @@ class App(Gtk.Application):
         else:
             n = self.next_state()
 
-        return _(STATE_LABELS[self.previous_state].format(
+        return STATE_LABELS[self.previous_state][
             "long" if n == States.LONG_BREAK else "short"
-        ))
+        ]
 
 
     def advance_state(self):

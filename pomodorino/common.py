@@ -39,7 +39,10 @@ class States(Enum):
 STATE_LABELS = {
     States.INITIAL: _("Start Pomodoro!"),
     States.POMODORO: _("Pomodoro in progress."),
-    States.AFTER_POMODORO: _("Start a {} break"),
+    States.AFTER_POMODORO: {
+        "short": _("Start a short break"),
+        "long": _("Start a long break")
+    },
     States.SHORT_BREAK: _("Short break in progress."),
     States.LONG_BREAK: _("Long break in progress."),
     States.AFTER_BREAK: _("Start New Pomodoro!"),
