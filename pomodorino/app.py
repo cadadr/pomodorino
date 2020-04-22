@@ -58,9 +58,11 @@ class App(Gtk.Application):
         self.suppress_desktop_notifications = SUPPRESS_DESKTOP_NOTIFICATIONS_DEFAULT
 
         # Find the logo. ‘main’ lacks ‘__file__’ in interactive mode.
-        l = "../assets/logo.png"
-        self.logo_path = l if not hasattr(main, '__file__') \
-            else os.path.join(os.path.dirname(__file__), l)
+        self.logo_path = "../assets/logo.png"
+        try:
+            self.logo_path = os.path.join(os.path.dirname(__file__), self.logo_path)
+        except NameError as e:
+            pass
 
         self.logo = GdkPixbuf.Pixbuf.new_from_file_at_scale(self.logo_path, 64, 64, True)
 
