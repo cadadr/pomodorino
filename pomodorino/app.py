@@ -47,6 +47,8 @@ class App(Gtk.Application):
         self.current_timer = None
         self.previous_state = None
         self.paused = False
+        self.settings_popup = None
+        self.about_dialog = None
         self.state = States.INITIAL
         self.pomodoro_count = 0
         self.phase_seconds = copy.deepcopy(PHASE_SECONDS_DEFAULTS)
@@ -175,12 +177,19 @@ class App(Gtk.Application):
 
 
     def on_settings(self, action, param=None):
-        self.pre_settings_record = (
-            copy.deepcopy(self.phase_seconds), self.suppress_desktop_notifications
-        )
-        self.settings_popup = SettingsModal(title="Pomodorino Settings",
-                                            application=self)
-        self.settings_popup.present()
+        if not self.settings_popup:
+            self.pre_settings_record = (
+                copy.deepcopy(self.phase_seconds), self.suppress_desktop_notifications
+            )
+            self.settings_popup = SettingsModal(title="Pomodorino Settings",
+                                                application=self)
+            self.settings_popup.present()
+            self.settings_popup.connect('destroy', self.on_settings)
+        else:
+            self.settings_popup.close()
+            self.settings_popup = None
+
+        self.indicator.menu_settings.set_sensitive(not self.settings_popup)
 
 
     def on_settings_undone(self, action, param=None):
@@ -235,24 +244,31 @@ class App(Gtk.Application):
 
 
     def on_about(self, action, param=None):
-        about_dialog = Gtk.AboutDialog()
-        about_dialog.set_authors(["Göktuğ Kayaalp <self@gkayaalp.com>"])
-        about_dialog.set_comments("Simple Pomodoro Timer.")
-        about_dialog.set_copyright(
-            "Copyright (C) 2019, 2020 Göktuğ Kayaalp <self@gkayaalp.com>")
-        about_dialog.set_license_type(Gtk.License.GPL_3_0)
-        about_dialog.set_website("https://www.gkayaalp.com/pomodorino.html")
-        about_dialog.set_website_label("Website: {}".format(
-            about_dialog.get_website()))
-        about_dialog.set_program_name(self.app_name)
-        about_dialog.set_version(VERSION)
-        # about_dialog.set_documenters(...)
-        # about_dialog.set_translator_credits(...)
-        # about_dialog.set_artists(...)
+        if not self.about_dialog:
+              self.about_dialog = Gtk.AboutDialog()
+              self.about_dialog.set_logo(self.logo)
+              self.about_dialog.set_authors(["Göktuğ Kayaalp <self@gkayaalp.com>"])
+              self.about_dialog.set_comments("Simple Pomodoro Timer.")
+              self.about_dialog.set_copyright(
+                  "Copyright (C) 2019, 2020 Göktuğ Kayaalp <self@gkayaalp.com>")
+              self.about_dialog.set_license_type(Gtk.License.GPL_3_0)
+              self.about_dialog.set_website("https://www.gkayaalp.com/pomodorino.html")
+              self.about_dialog.set_website_label("Website: {}".format(
+                  self.about_dialog.get_website()))
+              self.about_dialog.set_program_name(self.app_name)
+              self.about_dialog.set_version(VERSION)
+              # about_dialog.set_documenters(...)
+              # about_dialog.set_translator_credits(...)
+              # about_dialog.set_artists(...)
+              self.about_dialog.connect('destroy', self.on_about)
+              self.about_dialog.show()
 
-        # So this works for some reason...
-        about_dialog.run()
-        about_dialog.destroy()
+        else:
+              self.about_dialog.close()
+              self.about_dialog = None
+
+        self.indicator.menu_about.set_sensitive(not self.about_dialog)
+
 
 
     def on_multi(self, action, param=None):
