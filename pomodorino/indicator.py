@@ -48,6 +48,8 @@ class Indicator:
         self.i.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
         self.i.set_title(self.app.app_name)
         self.i.set_menu(self.menu)
+        self.i.props.label_guide = "00:00"
+        self.i.props.label = "--:--"
 
         self.update()
 
@@ -92,6 +94,10 @@ class Indicator:
             self.app.get_timer_label(self.app.timer_seconds - self.app.time_elapsed),
             self.app.get_timer_label(),
             self.app.pomodoro_count
+        )
+
+        self.i.props.label = "{}".format(
+            self.app.get_timer_label(self.app.timer_seconds - self.app.time_elapsed)
         )
 
         self.menu_progress.set_label(progress_label)
