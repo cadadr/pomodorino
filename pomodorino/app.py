@@ -220,20 +220,17 @@ class App(Gtk.Application):
         self.time_elapsed = 0
         self.state = self.previous_state
         self.timer_seconds = self.phase_seconds[self.state]
+        self.paused = False
         self.indicator.update()
 
 
     def on_pause(self, action, param=None):
-        if action.get_active() and self.current_timer:
+        if action.get_sensitive() and self.current_timer:
             GLib.source_remove(self.current_timer)
             self.current_timer = None
             self.paused = True
         else:
             self.start_timer()
-        self.indicator.update()
-
-
-    def on_pause_from_menu(self, action, param=None):
         self.indicator.update()
 
 

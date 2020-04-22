@@ -62,7 +62,7 @@ class Indicator:
         self.menu_multi.connect('activate', self.app.on_multi)
 
         self.menu_pause = Gtk.MenuItem("Pause")
-        self.menu_pause.connect('activate', self.app.on_pause_from_menu)
+        self.menu_pause.connect('activate', self.app.on_pause)
 
         self.menu_reset = Gtk.MenuItem('Reset')
         self.menu_reset.connect('activate', self.app.on_reset)
