@@ -106,6 +106,6 @@ class Indicator:
         self.menu_pause.set_sensitive(not (self.app.time_elapsed == 0))
 
         if self.app.paused:
-            self.menu_pause.set_label("Unpause")
+            self.menu_pause.set_label("Resume")
         else:
             self.menu_pause.set_label("Pause")
