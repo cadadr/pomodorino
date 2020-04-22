@@ -32,7 +32,6 @@ from gi.repository import Gtk, Gio, GLib, GdkPixbuf
 import notify2
 
 from pomodorino.common import *
-from pomodorino.mainwindow import MainWindow
 from pomodorino.settingsmodal import SettingsModal
 from pomodorino.indicator import Indicator
 
@@ -44,7 +43,6 @@ class App(Gtk.Application):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, application_id=self.app_id, **kwargs)
         self.title = self.app_name
-        self.window = None
         self.indicator = None
         self.current_timer = None
         self.previous_state = None
@@ -87,14 +85,9 @@ class App(Gtk.Application):
 
 
     def do_activate(self):
-        if not self.window:
-            self.window = MainWindow(application=self, title=self.title)
-        self.window.set_default_icon(self.logo)
-
         if not self.indicator:
             self.indicator = Indicator(application=self)
-
-        self.window.present()
+        self.send_desktop_notification("Pomodorino is ready!")
         self.hold()
 
 
@@ -140,7 +133,6 @@ class App(Gtk.Application):
     def on_advance(self, action, param=None):
         self.advance_state()
         self.indicator.update()
-        self.window.update()
         self.start_timer()
 
 
@@ -166,12 +158,10 @@ class App(Gtk.Application):
                 self.send_desktop_notification(
                     "Completed {} break!".format(self.break_kind()))
             self.indicator.update()
-            self.window.update()
             return False
         else:
             self.time_elapsed += 1
             self.indicator.update()
-            self.window.update()
             return True
 
 
@@ -187,8 +177,7 @@ class App(Gtk.Application):
         self.pre_settings_record = (
             copy.deepcopy(self.phase_seconds), self.suppress_desktop_notifications
         )
-        self.settings_popup = SettingsModal(transient_for=self.window,
-                                            title="Pomodorino Settings",
+        self.settings_popup = SettingsModal(title="Pomodorino Settings",
                                             application=self)
         self.settings_popup.present()
 
@@ -202,7 +191,6 @@ class App(Gtk.Application):
         value = action.get_value_as_int()
         self.phase_seconds[param] = value * 60
         self.indicator.update()
-        self.window.update()
 
 
     def on_suppress_desktop_notifs_switch_set(self, action, param=None):
@@ -223,7 +211,6 @@ class App(Gtk.Application):
         self.time_elapsed = 0
         self.pomodoro_count = 0
         self.indicator.update()
-        self.window.update()
 
 
     def on_cancel(self, action, param=None):
@@ -233,7 +220,6 @@ class App(Gtk.Application):
         self.state = self.previous_state
         self.timer_seconds = self.phase_seconds[self.state]
         self.indicator.update()
-        self.window.update()
 
 
     def on_pause(self, action, param=None):
@@ -247,12 +233,11 @@ class App(Gtk.Application):
 
 
     def on_pause_from_menu(self, action, param=None):
-        self.window.pause_button.set_active(not self.paused)
         self.indicator.update()
 
 
     def on_about(self, action, param=None):
-        about_dialog = Gtk.AboutDialog(transient_for=self.window, modal=True)
+        about_dialog = Gtk.AboutDialog()
         about_dialog.set_authors(["Göktuğ Kayaalp <self@gkayaalp.com>"])
         about_dialog.set_comments("Simple Pomodoro Timer.")
         about_dialog.set_copyright(
@@ -270,17 +255,6 @@ class App(Gtk.Application):
         # So this works for some reason...
         about_dialog.run()
         about_dialog.destroy()
-
-
-    def on_window_destroyed(self, action, param=None):
-        self.window.hide()
-        self.indicator.update()
-        return True             # Don’t destroy the window
-
-
-    def on_show_window(self, action, param=None):
-        self.window.show()
-        self.indicator.update()
 
 
     def on_multi(self, action, param=None):
@@ -305,6 +279,9 @@ class App(Gtk.Application):
             l = l.format(self.break_kind())
         return l
 
+    # TODO(2020-04-22): window removed, this can go into the
+    # Indicator.
+    #
     # We parameterise x so that there can be only one place where the
     # timer string is generated.  Otherwise, MainWindow.update() has to do
     # it too, and that results in inconsistencies.

@@ -76,9 +76,6 @@ class Indicator:
         self.menu_about = Gtk.MenuItem('About')
         self.menu_about.connect('activate', self.app.on_about)
 
-        self.menu_show_window = Gtk.MenuItem('Show Window')
-        self.menu_show_window.connect('activate', self.app.on_show_window)
-
         self.menu.append(self.menu_progress)
         self.menu.append(self.menu_multi)
         self.menu.append(self.menu_pause)
@@ -86,13 +83,11 @@ class Indicator:
         self.menu.append(self.menu_settings)
         self.menu.append(self.menu_quit)
         self.menu.append(self.menu_about)
-        self.menu.append(self.menu_show_window)
 
         self.menu.show_all()
 
 
     def update(self):
-        window_visible = self.app.window.get_visible()
         progress_label = "{}/{} ({})".format(
             self.app.get_timer_label(self.app.timer_seconds - self.app.time_elapsed),
             self.app.get_timer_label(),
@@ -101,7 +96,6 @@ class Indicator:
 
         self.menu_progress.set_label(progress_label)
         self.menu_multi.set_label(self.app.get_multi_button_label())
-        self.menu_show_window.set_sensitive(not window_visible)
 
         self.menu_pause.set_sensitive(not (self.app.time_elapsed == 0))
 
