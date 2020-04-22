@@ -168,6 +168,7 @@ class App(Gtk.Application):
     def send_desktop_notification(self, message):
         if not self.suppress_desktop_notifications:
             n = notify2.Notification(self.title, message)
+            n.set_icon_from_pixbuf(self.logo)
             n.show()
         else:
             print("Suppressed desktop notification:", message)
