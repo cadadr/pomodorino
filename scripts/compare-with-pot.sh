@@ -2,7 +2,7 @@
 # compare-with-pot.sh --- find differences from pot in po files.
 
 pick(){
-    grep ^msgid $1
+    grep ^msgid $1 | sort
 }
 
 pot=$(mktemp --tmpdir XXXXXXXXXX.pot)
@@ -15,3 +15,5 @@ for po in po/*.po; do
     pick $po > $tmp
     diff -u $tmp $pot
 done
+
+exit $?
