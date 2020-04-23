@@ -39,7 +39,7 @@ classifiers = [
 ]
 
 include = [
-    "assets/*",
+    "assets/**/*",
     "COPYING"
 ]
 
