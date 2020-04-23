@@ -18,7 +18,7 @@
 
 [tool.poetry]
 name = "pomodorino"
-version = "0.1.0-alpha"
+version = "0.1.0-beta1"
 description = "Simple Pomodoro Timer"
 authors = ["Göktuğ Kayaalp <self@gkayaalp.com>"]
 license = "GPL-3.0+"

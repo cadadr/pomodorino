@@ -23,7 +23,7 @@
 from enum import Enum, unique
 from gettext import gettext as _
 
-VERSION = "0.1.0-alpha"
+VERSION = "0.1.0-beta1"
 
 CLOCK_RESOLUTION = 1000
 
