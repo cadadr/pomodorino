@@ -21,9 +21,10 @@
 """
 
 import copy
+import gettext
+import locale
 import os
 import sys
-from gettext import gettext as _
 
 import gi
 
@@ -36,10 +37,44 @@ from pomodorino.common import *
 from pomodorino.settingsmodal import SettingsModal
 from pomodorino.indicator import Indicator
 
+
+APP_ID = "com.gkayaalp.pomodorino"
+
+CWD = "."
+try:
+    CWD = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
+except NameError:
+    pass
+
+LOCALE_DIR = os.path.abspath(os.path.join(CWD, '../assets/mo'))
+
+locale.setlocale(locale.LC_ALL, '')
+locale.bindtextdomain(APP_ID, LOCALE_DIR)
+
+# HACK(2020-04-23): gettext.find uses envvars instead of the locale
+# module. This is a workaround.
+os.environ["LANGUAGE"]= locale.getlocale(locale.LC_MESSAGES)[0].split("_")[0]
+
+gettext.bindtextdomain(APP_ID, LOCALE_DIR)
+gettext.textdomain(APP_ID)
+gettext.install(APP_ID)
+_ = gettext.gettext
+
+
+BUTTON_LABELS = {
+    States.INITIAL: _("Get going!"),
+    States.POMODORO: _("Cancel"),
+    States.AFTER_POMODORO: _("Start break"),
+    States.SHORT_BREAK: _("Cancel"),
+    States.LONG_BREAK: _("Cancel"),
+    States.AFTER_BREAK: _("Start new pomodoro")
+}
+
+
 class App(Gtk.Application):
 
-    app_id = "com.gkayaalp.pomodorino"
-    app_name = "Pomodorino"  # TODO(2019-12-06): internationalise?
+    app_id = APP_ID
+    app_name = "Pomodorino"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, application_id=self.app_id, **kwargs)
@@ -57,12 +92,8 @@ class App(Gtk.Application):
         self.time_elapsed = 0
         self.suppress_desktop_notifications = SUPPRESS_DESKTOP_NOTIFICATIONS_DEFAULT
 
-        # Find the logo. ‘main’ lacks ‘__file__’ in interactive mode.
         self.logo_path = "../assets/logo.png"
-        try:
-            self.logo_path = os.path.join(os.path.dirname(__file__), self.logo_path)
-        except NameError as e:
-            pass
+        self.logo_path = os.path.join(CWD, self.logo_path)
 
         self.logo = GdkPixbuf.Pixbuf.new_from_file_at_scale(self.logo_path, 64, 64, True)
 
@@ -117,19 +148,6 @@ class App(Gtk.Application):
 
         return States.AFTER_BREAK
 
-    def break_message(self):
-        n = None
-        # In this case we’re already on a break state, so we don’t
-        # need to peek ahead.
-        if self.previous_state == States.AFTER_POMODORO:
-            n = self.state
-        else:
-            n = self.next_state()
-
-        return STATE_LABELS[self.previous_state][
-            "long" if n == States.LONG_BREAK else "short"
-        ]
-
 
     def advance_state(self):
         self.previous_state = self.state
@@ -145,11 +163,24 @@ class App(Gtk.Application):
 
 
     def start_timer(self):
-        message = self.break_message()
+        message = None
+
+        if self.paused:
+            message = _("Resume")
+        elif self.state == States.POMODORO:
+            message = _("Started new pomodoro")
+        elif self.state == States.SHORT_BREAK:
+            message =  _("Started short break")
+        elif self.state == States.LONG_BREAK:
+            message = _("Started long break")
+
         if self.timer_seconds > 0:
             self.current_timer = GLib.timeout_add(CLOCK_RESOLUTION, self.tick)
+
+        if message:
+            self.send_desktop_notification(message)
+
         self.paused = False
-        self.send_desktop_notification(message)
 
 
     def tick(self):
@@ -159,10 +190,12 @@ class App(Gtk.Application):
             self.advance_state()
             if self.state == States.AFTER_POMODORO:
                 self.pomodoro_count += 1
-                self.send_desktop_notification(_("Completed pomodoro!"))
+                self.send_desktop_notification(_("Completed pomodoro"))
             elif self.state == States.AFTER_BREAK:
-                self.send_desktop_notification(
-                    self.break_message())
+                if self.previous_state == States.SHORT_BREAK:
+                    self.send_desktop_notification(_("Completed short break"))
+                else:
+                    self.send_desktop_notification(_("Completed long break"))
             self.indicator.update()
             return False
         else:
@@ -274,12 +307,12 @@ class App(Gtk.Application):
         self.indicator.menu_about.set_sensitive(not self.about_dialog)
 
 
-
+    # HACK(2020-04-23): Must not depend on button label.
     def on_multi(self, action, param=None):
-        if action.get_label() == MULTI_BUTTON_START:
-            self.on_advance(action, param)
-        else:
+        if action.get_label() == _("Cancel"):
             self.on_cancel(action, param)
+        else:
+            self.on_advance(action, param)
 
 
     def on_quit(self, action, param=None):
@@ -290,12 +323,6 @@ class App(Gtk.Application):
     def get_multi_button_label(self):
         return BUTTON_LABELS[self.state]
 
-
-    def get_state_label(self):
-        l = STATE_LABELS[self.state]
-        if self.state == States.AFTER_POMODORO:
-            l = l.format(self.break_kind())
-        return l
 
     # TODO(2020-04-22): window removed, this can go into the
     # Indicator.

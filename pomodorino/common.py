@@ -36,29 +36,6 @@ class States(Enum):
     LONG_BREAK = 5
     AFTER_BREAK = 6
 
-STATE_LABELS = {
-    States.INITIAL: _("Start Pomodoro!"),
-    States.POMODORO: _("Pomodoro in progress."),
-    States.AFTER_POMODORO: {
-        "short": _("Start a short break"),
-        "long": _("Start a long break")
-    },
-    States.SHORT_BREAK: _("Short break in progress."),
-    States.LONG_BREAK: _("Long break in progress."),
-    States.AFTER_BREAK: _("Start New Pomodoro!"),
-}
-
-MULTI_BUTTON_START = _("_Start")
-MULTI_BUTTON_CANCEL = _("_Cancel")
-
-BUTTON_LABELS = {
-    States.INITIAL: MULTI_BUTTON_START,
-    States.POMODORO: MULTI_BUTTON_CANCEL,
-    States.AFTER_POMODORO: MULTI_BUTTON_START,
-    States.SHORT_BREAK: MULTI_BUTTON_CANCEL,
-    States.LONG_BREAK: MULTI_BUTTON_CANCEL,
-    States.AFTER_BREAK: MULTI_BUTTON_START,
-}
 
 PHASE_SECONDS_DEFAULTS = {
     States.INITIAL: 0,
