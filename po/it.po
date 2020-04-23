@@ -12,7 +12,7 @@ msgstr ""
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Göktuğ Kayaalp <self at gkayaalp dot com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: it_IT\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -96,7 +96,7 @@ msgstr "Impostazioni"
 
 #: pomodorino/settingsmodal.py:55
 msgid "Short break length (minutes):"
-msgstr "Durata delle pause corte (minuti):"
+msgstr "Durata delle pause brevi (minuti):"
 
 #: pomodorino/app.py:288
 msgid "Simple Pomodoro Timer."
