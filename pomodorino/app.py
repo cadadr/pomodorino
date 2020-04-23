@@ -48,12 +48,15 @@ except NameError:
 
 LOCALE_DIR = os.path.abspath(os.path.join(CWD, '../assets/mo'))
 
-locale.setlocale(locale.LC_ALL, '')
-locale.bindtextdomain(APP_ID, LOCALE_DIR)
+try:
+    locale.setlocale(locale.LC_ALL, '')
+    locale.bindtextdomain(APP_ID, LOCALE_DIR)
 
-# HACK(2020-04-23): gettext.find uses envvars instead of the locale
-# module. This is a workaround.
-os.environ["LANGUAGE"]= locale.getlocale(locale.LC_MESSAGES)[0].split("_")[0]
+    # HACK(2020-04-23): gettext.find uses envvars instead of the locale
+    # module. This is a workaround.
+    os.environ["LANGUAGE"]= locale.getlocale(locale.LC_MESSAGES)[0].split("_")[0]
+except locale.Error:
+    pass
 
 gettext.bindtextdomain(APP_ID, LOCALE_DIR)
 gettext.textdomain(APP_ID)
