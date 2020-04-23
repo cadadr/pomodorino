@@ -133,3 +133,7 @@ msgstr "_Fatto"
 #: pomodorino/settingsmodal.py:72
 msgid "_Undo"
 msgstr "_Annulla modificazioni"
+
+#: pomodorino/app.py:171
+msgid "Started new pomodoro"
+msgstr "Nuovo pomodoro avviato"
