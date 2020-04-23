@@ -1,0 +1,18 @@
+[Desktop Entry]
+Version=1.0
+Name=Pomodorino
+Name[tr]=Pomodorino
+Name[it]=Pomodorino
+Comment=Simple Pomodoro timer
+Comment[tr]=Semplice Timer Pomodorino
+Comment[it]=Basit Pomodorino Kronometresi
+GenericName=Pomodoro timer
+GenericName[tr]=Timer Pomodorino
+GenericName[it]=Pomodorino Kronometresi
+Exec=pomodorino
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=pomodorino
+Categories=GNOME;GTK;Office;Timer;
+StartupNotify=true
