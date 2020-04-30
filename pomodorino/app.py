@@ -20,6 +20,12 @@
 
 """
 
+# flake8: noqa E402  # impossible to satisfy because of Gtk bullshit
+
+import gi
+
+gi.require_version('Gtk', '3.0')
+
 from gi.repository import Gtk, Gio, GLib, GdkPixbuf
 import notify2
 
@@ -36,10 +42,6 @@ import gettext
 import locale
 import os
 import sys
-
-import gi
-
-gi.require_version('Gtk', '3.0')
 
 APP_ID = "com.gkayaalp.pomodorino"
 

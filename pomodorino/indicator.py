@@ -20,15 +20,17 @@
 
 """
 
-
-from gi.repository import Gtk, AppIndicator3
-
-from gettext import gettext as _
+# flake8: noqa: E402  # impossible to satisfy b/c Gtk bullshit
 
 import gi
 
 gi.require_version('Gtk', '3.0')
 gi.require_version('AppIndicator3', '0.1')
+
+from gi.repository import Gtk, AppIndicator3
+
+from gettext import gettext as _
+
 
 
 # This can’t be a subclass of AppIndicator3.Indicator because the damn
