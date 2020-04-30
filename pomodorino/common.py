@@ -21,11 +21,12 @@
 """
 
 from enum import Enum, unique
-from gettext import gettext as _
+
 
 VERSION = "0.1.0-beta1"
 
 CLOCK_RESOLUTION = 1000
+
 
 @unique
 class States(Enum):

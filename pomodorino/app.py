@@ -20,6 +20,17 @@
 
 """
 
+from gi.repository import Gtk, Gio, GLib, GdkPixbuf
+import notify2
+
+from pomodorino.common import (
+    VERSION, CLOCK_RESOLUTION, PHASE_SECONDS_DEFAULTS,
+    SUPPRESS_DESKTOP_NOTIFICATIONS_DEFAULT,
+    States
+)
+from pomodorino.settingsmodal import SettingsModal
+from pomodorino.indicator import Indicator
+
 import copy
 import gettext
 import locale
@@ -29,14 +40,6 @@ import sys
 import gi
 
 gi.require_version('Gtk', '3.0')
-
-from gi.repository import Gtk, Gio, GLib, GdkPixbuf
-import notify2
-
-from pomodorino.common import *
-from pomodorino.settingsmodal import SettingsModal
-from pomodorino.indicator import Indicator
-
 
 APP_ID = "com.gkayaalp.pomodorino"
 
@@ -54,7 +57,7 @@ try:
 
     # HACK(2020-04-23): gettext.find uses envvars instead of the locale
     # module. This is a workaround.
-    os.environ["LANGUAGE"]= locale.getlocale(locale.LC_MESSAGES)[0].split("_")[0]
+    os.environ["LANGUAGE"] = locale.getlocale(locale.LC_MESSAGES)[0].split("_")[0]
 except locale.Error:
     pass
 
@@ -173,7 +176,7 @@ class App(Gtk.Application):
         elif self.state == States.POMODORO:
             message = _("Started new pomodoro")
         elif self.state == States.SHORT_BREAK:
-            message =  _("Started short break")
+            message = _("Started short break")
         elif self.state == States.LONG_BREAK:
             message = _("Started long break")
 
@@ -285,33 +288,33 @@ class App(Gtk.Application):
 
     def on_about(self, action, param=None):
         if not self.about_dialog:
-              self.about_dialog = Gtk.AboutDialog()
-              self.about_dialog.set_logo(self.logo)
-              self.about_dialog.set_authors(["Göktuğ Kayaalp <self@gkayaalp.com>"])
-              self.about_dialog.set_comments(_("Simple Pomodoro Timer."))
-              self.about_dialog.set_copyright(
-                  _("Copyright (C) 2019, 2020 Göktuğ Kayaalp <self@gkayaalp.com>"))
-              self.about_dialog.set_license_type(Gtk.License.GPL_3_0)
-              self.about_dialog.set_website("https://www.gkayaalp.com/pomodorino.html")
-              self.about_dialog.set_website_label(_("Website: {}").format(
-                  self.about_dialog.get_website()))
-              self.about_dialog.set_program_name(self.app_name)
-              self.about_dialog.set_version(VERSION)
-              # about_dialog.set_documenters(...)
-              # about_dialog.set_translator_credits(...)
-              # about_dialog.set_artists(...)
-              self.about_dialog.connect('destroy', self.on_about)
-              self.about_dialog.show()
+            self.about_dialog = Gtk.AboutDialog()
+            self.about_dialog.set_logo(self.logo)
+            self.about_dialog.set_authors(["Göktuğ Kayaalp <self@gkayaalp.com>"])
+            self.about_dialog.set_comments(_("Simple Pomodoro Timer."))
+            self.about_dialog.set_copyright(
+                _("Copyright (C) 2019, 2020 Göktuğ Kayaalp <self@gkayaalp.com>"))
+            self.about_dialog.set_license_type(Gtk.License.GPL_3_0)
+            self.about_dialog.set_website("https://www.gkayaalp.com/pomodorino.html")
+            self.about_dialog.set_website_label(_("Website: {}").format(
+                self.about_dialog.get_website()))
+            self.about_dialog.set_program_name(self.app_name)
+            self.about_dialog.set_version(VERSION)
+            # about_dialog.set_documenters(...)
+            # about_dialog.set_translator_credits(...)
+            # about_dialog.set_artists(...)
+            self.about_dialog.connect('destroy', self.on_about)
+            self.about_dialog.show()
 
         else:
-              self.about_dialog.close()
-              self.about_dialog = None
+            self.about_dialog.close()
+            self.about_dialog = None
 
         self.indicator.menu_about.set_sensitive(not self.about_dialog)
 
 
     # HACK(2020-04-23): Must not depend on button label.
-    def on_multi(self, action, param=None):
+    def on_multi(self, action, param=None):  # noqa: E301
         if action.get_label() == _("Cancel"):
             self.on_cancel(action, param)
         else:
@@ -336,7 +339,7 @@ class App(Gtk.Application):
     #
     # It’s sad that you can’t refer to self within the argument list;
     # that’s why I needed the first if clause.
-    def get_timer_label(self, x = None):
+    def get_timer_label(self, x=None):  # noqa: E301
         if not x:
             x = self.timer_seconds
 

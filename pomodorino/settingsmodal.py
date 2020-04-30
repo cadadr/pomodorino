@@ -20,15 +20,15 @@
 
 """
 
+from gi.repository import Gtk
+
+from pomodorino.common import States
+
 from gettext import gettext as _
 
 import gi
 
 gi.require_version('Gtk', '3.0')
-
-from gi.repository import Gtk
-
-from pomodorino.common import *
 
 
 class SettingsModal(Gtk.Window):
@@ -124,5 +124,4 @@ class SettingsModal(Gtk.Window):
         self.long_break_spinner.set_value(f(self.app.phase_seconds[States.LONG_BREAK]))
         self.suppress_desktop_notifs_switch.set_active(
             not self.app.suppress_desktop_notifications)
-
 
