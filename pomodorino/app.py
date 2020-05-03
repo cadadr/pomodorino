@@ -132,6 +132,10 @@ class App(Gtk.Application):
 
         notify2.init(self.app_id)
 
+        self.action_support = "actions" in notify2.get_server_caps()
+        if not self.action_support:
+            print(_("Notifications server does not support actions"))
+
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
@@ -195,6 +199,15 @@ class App(Gtk.Application):
         self.start_timer()
 
 
+    def on_skip_break(self, action, param=None, *args):
+        assert self.state == States.AFTER_POMODORO
+        self.send_desktop_notification(_("Skipped a break"))
+        self.advance_state()    # after_pomodoro -> break
+        self.advance_state()    # break -> pomodoro
+        assert self.state == States.AFTER_BREAK
+        self.indicator.update()
+
+
     def start_timer(self):
         message = None
 
@@ -223,7 +236,11 @@ class App(Gtk.Application):
             self.advance_state()
             if self.state == States.AFTER_POMODORO:
                 self.pomodoro_count += 1
-                self.send_desktop_notification(_("Completed pomodoro"))
+                self.send_desktop_notification(
+                    _("Completed pomodoro"),
+                    # TODO(2020-05-03): does not work for some reason
+                    # ("skip", _("Skip the break"), lambda *a: print(a), None)
+                )
             elif self.state == States.AFTER_BREAK:
                 if self.previous_state == States.SHORT_BREAK:
                     self.send_desktop_notification(_("Completed short break"))
@@ -237,10 +254,13 @@ class App(Gtk.Application):
             return True
 
 
-    def send_desktop_notification(self, message):
+    def send_desktop_notification(self, message, action=None):
         if not self.suppress_desktop_notifications:
             n = notify2.Notification(self.title, message)
             n.set_icon_from_pixbuf(self.logo)
+            if action and self.action_support:
+                action, label, callback, data = action
+                n.add_action(action, label, callback, data)
             n.show()
         else:
             print(_("Suppressed desktop notification:"), message)

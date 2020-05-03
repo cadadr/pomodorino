@@ -69,6 +69,10 @@ class Indicator:
         self.menu_pause = Gtk.MenuItem(_("Pause"))
         self.menu_pause.connect('activate', self.app.on_pause)
 
+        self.menu_skip = Gtk.MenuItem(_("Skip break"))
+        self.menu_skip.set_sensitive(False)
+        self.menu_skip.connect('activate', self.app.on_skip_break)
+
         self.menu_reset = Gtk.MenuItem(_('Reset'))
         self.menu_reset.connect('activate', self.app.on_reset)
 
@@ -84,6 +88,7 @@ class Indicator:
         self.menu.append(self.menu_progress)
         self.menu.append(self.menu_multi)
         self.menu.append(self.menu_pause)
+        self.menu.append(self.menu_skip)
         self.menu.append(self.menu_reset)
         self.menu.append(self.menu_settings)
         self.menu.append(self.menu_quit)
@@ -107,6 +112,8 @@ class Indicator:
         self.menu_multi.set_label(self.app.get_multi_button_label())
 
         self.menu_pause.set_sensitive(not (self.app.time_elapsed == 0))
+
+        self.menu_skip.set_sensitive(self.app.state == self.app.states.AFTER_POMODORO)
 
         if self.app.paused:
             self.menu_pause.set_label(_("Resume"))
