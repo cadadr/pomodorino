@@ -29,13 +29,10 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gio, GLib, GdkPixbuf
 import notify2
 
-from pomodorino.common import (
-    VERSION, CLOCK_RESOLUTION, PHASE_SECONDS_DEFAULTS,
-    SUPPRESS_DESKTOP_NOTIFICATIONS_DEFAULT,
-    States
-)
 from pomodorino.settingsmodal import SettingsModal
 from pomodorino.indicator import Indicator
+
+from enum import Enum, unique
 
 import copy
 import gettext
@@ -69,6 +66,32 @@ gettext.install(APP_ID)
 _ = gettext.gettext
 
 
+
+VERSION = "0.1.0-beta1"
+
+CLOCK_RESOLUTION = 1000
+
+@unique
+class States(Enum):
+    INITIAL = 1
+    POMODORO = 2
+    AFTER_POMODORO = 3
+    SHORT_BREAK = 4
+    LONG_BREAK = 5
+    AFTER_BREAK = 6
+
+
+PHASE_SECONDS_DEFAULTS = {
+    States.INITIAL: 0,
+    States.POMODORO: 25 * 60,
+    States.AFTER_POMODORO: 0,
+    States.SHORT_BREAK: 5 * 60,
+    States.LONG_BREAK: 15 * 60,
+    States.AFTER_BREAK: 0,
+}
+
+SUPPRESS_DESKTOP_NOTIFICATIONS_DEFAULT = False
+
 BUTTON_LABELS = {
     States.INITIAL: _("Get going!"),
     States.POMODORO: _("Cancel"),
@@ -83,6 +106,8 @@ class App(Gtk.Application):
 
     app_id = APP_ID
     app_name = "Pomodorino"
+
+    states = States
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, application_id=self.app_id, **kwargs)

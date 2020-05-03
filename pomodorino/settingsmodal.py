@@ -22,8 +22,6 @@
 
 from gi.repository import Gtk
 
-from pomodorino.common import States
-
 from gettext import gettext as _
 
 import gi
@@ -50,11 +48,11 @@ class SettingsModal(Gtk.Window):
         self.grid_row = 0
 
         self.pomodoro_spinner = self.make_time_spinner_and_attach(
-            _("Pomodoro length (minutes):"), States.POMODORO)
+            _("Pomodoro length (minutes):"), self.app.states.POMODORO)
         self.short_break_spinner = self.make_time_spinner_and_attach(
-            _("Short break length (minutes):"), States.SHORT_BREAK)
+            _("Short break length (minutes):"), self.app.states.SHORT_BREAK)
         self.long_break_spinner = self.make_time_spinner_and_attach(
-            _("Long break length (minutes):"), States.LONG_BREAK)
+            _("Long break length (minutes):"), self.app.states.LONG_BREAK)
 
         self.add_label(_("Desktop notifications:"))
         self.suppress_desktop_notifs_switch = Gtk.Switch()
@@ -119,9 +117,12 @@ class SettingsModal(Gtk.Window):
             minutes, _ = divmod(x, 60)
             return minutes
 
-        self.pomodoro_spinner.set_value(f(self.app.phase_seconds[States.POMODORO]))
-        self.short_break_spinner.set_value(f(self.app.phase_seconds[States.SHORT_BREAK]))
-        self.long_break_spinner.set_value(f(self.app.phase_seconds[States.LONG_BREAK]))
+        self.pomodoro_spinner.set_value(
+            f(self.app.phase_seconds[self.app.states.POMODORO]))
+        self.short_break_spinner.set_value(
+            f(self.app.phase_seconds[self.app.states.SHORT_BREAK]))
+        self.long_break_spinner.set_value(
+            f(self.app.phase_seconds[self.app.states.LONG_BREAK]))
         self.suppress_desktop_notifs_switch.set_active(
             not self.app.suppress_desktop_notifications)
 
