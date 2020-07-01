@@ -63,6 +63,17 @@ class SettingsModal(Gtk.Window):
         self.suppress_desktop_notifs_switch.set_halign(Gtk.Align.CENTER)
         self.add_control(self.suppress_desktop_notifs_switch)
 
+
+        self.add_label(_("Ease-in mode:"))
+        self.ease_in_mode_switch = Gtk.Switch()
+        self.ease_in_mode_switch.connect(
+            "state_set", lambda x, y: self.app.on_ease_in_mode_switch_set(x, y)
+        )
+        # Don’t expand to fill:
+        self.ease_in_mode_switch.set_halign(Gtk.Align.CENTER)
+        self.add_control(self.ease_in_mode_switch)
+
+
         self.defaults_button = Gtk.Button.new_with_mnemonic(label=_("De_faults"))
         self.defaults_button.connect("clicked", lambda x: self.app.on_defaults(x, None))
         self.grid.attach(self.defaults_button, 1, self.grid_row, 1, 1)
@@ -125,4 +136,4 @@ class SettingsModal(Gtk.Window):
             f(self.app.phase_seconds[self.app.states.LONG_BREAK]))
         self.suppress_desktop_notifs_switch.set_active(
             not self.app.suppress_desktop_notifications)
-
+        self.ease_in_mode_switch.set_active(self.app.ease_in_mode_enabled)

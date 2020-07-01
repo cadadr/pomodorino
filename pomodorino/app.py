@@ -91,6 +91,7 @@ PHASE_SECONDS_DEFAULTS = {
 }
 
 SUPPRESS_DESKTOP_NOTIFICATIONS_DEFAULT = False
+EASE_IN_MODOE_ENABLED_DEFAULT = False
 
 BUTTON_LABELS = {
     States.INITIAL: _("Get going!"),
@@ -98,7 +99,7 @@ BUTTON_LABELS = {
     States.AFTER_POMODORO: _("Start break"),
     States.SHORT_BREAK: _("Cancel"),
     States.LONG_BREAK: _("Cancel"),
-    States.AFTER_BREAK: _("Start new pomodoro")
+    States.AFTER_BREAK: _("Start new pomodoro"),
 }
 
 
@@ -124,6 +125,7 @@ class App(Gtk.Application):
         self.timer_seconds = self.phase_seconds[self.state]
         self.time_elapsed = 0
         self.suppress_desktop_notifications = SUPPRESS_DESKTOP_NOTIFICATIONS_DEFAULT
+        self.ease_in_mode_enabled = EASE_IN_MODOE_ENABLED_DEFAULT
 
         self.logo_path = "../assets/logo.png"
         self.logo_path = os.path.join(CWD, self.logo_path)
@@ -170,6 +172,8 @@ class App(Gtk.Application):
 
     def next_state(self):
         if self.state == States.INITIAL:
+            if self.ease_in_mode_enabled:
+                return States.SHORT_BREAK
             return States.POMODORO
 
         if self.state == States.POMODORO:
@@ -200,11 +204,20 @@ class App(Gtk.Application):
 
 
     def on_skip_break(self, action, param=None, *args):
-        assert self.state == States.AFTER_POMODORO
-        self.send_desktop_notification(_("Skipped a break"))
+        if self.ease_in_mode_enabled:
+            assert self.state in [States.AFTER_POMODORO, States.INITIAL]
+        else:
+            assert self.state == States.AFTER_POMODORO
+        
         self.advance_state()    # after_pomodoro -> break
         self.advance_state()    # break -> pomodoro
         assert self.state == States.AFTER_BREAK
+
+        if self.ease_in_mode_enabled and self.pomodoro_count == 0:
+            self.send_desktop_notification(_("Skipped ease-in period"))
+        else:
+            self.send_desktop_notification(_("Skipped a break"))
+
         self.indicator.update()
 
 
@@ -216,7 +229,10 @@ class App(Gtk.Application):
         elif self.state == States.POMODORO:
             message = _("Started new pomodoro")
         elif self.state == States.SHORT_BREAK:
-            message = _("Started short break")
+            if self.ease_in_mode_enabled and self.previous_state == States.INITIAL:
+                message = _("Started ease-in period")
+            else:
+                message = _("Started short break")
         elif self.state == States.LONG_BREAK:
             message = _("Started long break")
 
@@ -243,7 +259,10 @@ class App(Gtk.Application):
                 )
             elif self.state == States.AFTER_BREAK:
                 if self.previous_state == States.SHORT_BREAK:
-                    self.send_desktop_notification(_("Completed short break"))
+                    if self.ease_in_mode_enabled and self.pomodoro_count == 0:
+                        self.send_desktop_notification(_("Completed ease-in period"))
+                    else:
+                        self.send_desktop_notification(_("Completed short break"))
                 else:
                     self.send_desktop_notification(_("Completed long break"))
             self.indicator.update()
@@ -295,6 +314,11 @@ class App(Gtk.Application):
 
     def on_suppress_desktop_notifs_switch_set(self, action, param=None):
         self.suppress_desktop_notifications = not param
+
+
+    def on_ease_in_mode_switch_set(self, action, param=None):
+        self.ease_in_mode_enabled = param
+        self.indicator.update()
 
 
     def on_defaults(self, action, param=None):
@@ -374,6 +398,11 @@ class App(Gtk.Application):
 
 
     def get_multi_button_label(self):
+        if self.ease_in_mode_enabled:
+            if self.state == States.INITIAL:
+                return _("Ease in!")
+            if self.pomodoro_count == 0 and self.state == States.AFTER_BREAK:
+                return BUTTON_LABELS[States.INITIAL]
         return BUTTON_LABELS[self.state]
 
 

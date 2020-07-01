@@ -113,7 +113,11 @@ class Indicator:
 
         self.menu_pause.set_sensitive(not (self.app.time_elapsed == 0))
 
-        self.menu_skip.set_sensitive(self.app.state == self.app.states.AFTER_POMODORO)
+        self.menu_skip.set_sensitive(
+            self.app.state == self.app.states.AFTER_POMODORO
+            or (self.app.ease_in_mode_enabled
+                and self.app.state == self.app.states.INITIAL)
+        )
 
         if self.app.paused:
             self.menu_pause.set_label(_("Resume"))
