@@ -14,5 +14,5 @@ Terminal=false
 X-MultipleArgs=false
 Type=Application
 Icon=pomodorino
-Categories=GNOME;GTK;Office;Timer;
+Categories=Utility;Office;Education;Clock;GNOME;GTK;
 StartupNotify=true
