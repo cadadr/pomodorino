@@ -9,7 +9,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 ### Variables:
-VERSION="0.1.0b1"
+VERSION="0.1.0b2"
 PYVERSION="3.8.3"
 SRCDIR="${SRCDIR:-$PWD}"
 OUTDIR="${OUTDIR:-$SRCDIR/dist}"
