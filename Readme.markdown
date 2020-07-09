@@ -1,9 +1,11 @@
 # Pomodorino
 
+<img src="assets/logo.png" style="width:64px;"/>
+
 **WORK IN PROGRESS**
 
-Pomodorino is a lightweight, simple Pomodoro timer desktop application
-written using Python 3 and GTK 3.
+Pomodorino is a lightweight, simple Pomodoro timer system tray
+application written using Python 3 and GTK 3.
 
 What sets it apart is that it’s totally FOSS (licensed under GPLv3+)
 and really lightweight.  Alternative Linux apps that I could find were
@@ -11,9 +13,13 @@ either paid and proprietrary or they used rather heavy technologies
 like Electron.
 
 Using Pomodorino should be rather straight-forward if you know about
-the [Pomodoro
-Technique®](https://en.wikipedia.org/wiki/Pomodoro_Technique) (which
-is a registered trademark of Francesco Cirillo).
+the [Pomodoro Technique®][pt] (which is a registered trademark of
+Francesco Cirillo).
+
+[pt]: https://en.wikipedia.org/wiki/Pomodoro_Technique
+
+
+![](assets/screenshots/grouped.png)
 
 ## Dependencies
 
@@ -24,7 +30,62 @@ is a registered trademark of Francesco Cirillo).
 
 ## Installation
 
-TBD
+Currently the only available binary releases are [AppImages], though
+source installation should be pretty straight-forward.  When the first
+0.1.0 release is done, more packaging work will take place.
+
+[AppImages]: https://appimage.org/
+
+### AppImage
+
+Download the `.AppImage` file attached to the [latest
+release][releases], and make it executable using the `chmod 750
+<FILENAME>` command.  App should launch upon double-clicking the
+AppImage. [AppImaged] provides better integration of AppImages to
+[FreeDesktop] environments.
+
+[releases]: https://github.com/cadadr/pomodorino/releases
+[AppImaged]: https://github.com/AppImage/appimaged/
+[FreeDesktop]: https://www.freedesktop.org/wiki/
+
+#### Building the AppImage
+
+The AppImage is currently built using
+[`scripts/appimage.bash`](scripts/appimage.bash). Just run it as
+follows at the project root, the AppImage will appear at `dist/`.
+This should be done **after** running `poetry install` **and** `poetry
+build`.
+
+### Source installation
+
+We use [Poetry] for project management, so installing that is a
+prerequisite:
+
+    pip3 install --user poetry
+
+[Poetry]:https://python-poetry.org/
+
+After that, at the project root, run the following commands:
+
+    poetry install
+    poetry build
+    pip3 install ./dist/pomodorino-0.1.0b1-py3-none-any.whl
+
+where the `0.1.0b1` bit is the package version; so update the command
+as necessary if the current version is different.
+
+These steps should’ve installed Pomodorino and it’s dependencies under
+some path that’s known to Python, possibly `~/.local/share` and
+`~/.local/bin`. Add that latter one to the `PATH` environment
+variable.
+
+For FreeDesktop environments, there is [a .desktop
+file](assets/pomodorino.desktop) included under the `assets/`
+directory. You can copy that and the icon to appropriate places to
+have a menu entry for running Pomodorino:
+
+    cp assets/pomodorino.desktop ~/.local/share/applications
+    cp assets/logo.png ~/.local/share/icons/hicolor/512x512/apps/pomodorino.png
 
 ## Contributing & Issues
 
