@@ -1,5 +1,6 @@
 dist/
 
+*.AppImage
 *.pyc
 *.egg-info
 assets/mo/
