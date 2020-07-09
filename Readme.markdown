@@ -1,6 +1,6 @@
 # Pomodorino
 
-<img src="assets/logo.png" style="width:64px;"/>
+<img src="assets/logo.png" width=64px/>
 
 **WORK IN PROGRESS**
 
