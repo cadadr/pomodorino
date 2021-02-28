@@ -1,6 +1,6 @@
 # Pomodorino
 
-<img src="assets/logo.png" width=64px/>
+<img src="assets/logo.png" width=64px alt="Pomodorino logo"/>
 
 **WORK IN PROGRESS**
 
@@ -19,7 +19,7 @@ Francesco Cirillo).
 [pt]: https://en.wikipedia.org/wiki/Pomodoro_Technique
 
 
-![](assets/screenshots/grouped.png)
+<img src="assets/screenshots/grouped.png" alt="screenshots of indicator menu and application windows" />
 
 ## Dependencies
 
