@@ -1,5 +1,5 @@
 # Pomodorino --- Simple Pomodoro timer app
-# Copyright (C) 2020  Göktuğ Kayaalp <self at gkayaalp dot com>
+# Copyright (C) 2020, 2021  Göktuğ Kayaalp <self at gkayaalp dot com>
 #
 # This file is part of Pomodorino.
 #
@@ -41,7 +41,8 @@ class Indicator:
     def __init__(self, *args, **kwargs):
         self.app = kwargs["application"]
         self.i = AppIndicator3.Indicator.new(
-            self.app.app_id, self.app.logo_path,
+            self.app.app_id,
+            self.app.get_app_icon_path(64),
             AppIndicator3.IndicatorCategory.APPLICATION_STATUS
         )
 

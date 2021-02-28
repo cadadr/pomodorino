@@ -101,6 +101,7 @@ class App(Gtk.Application):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, application_id=self.app_id, **kwargs)
         self.title = self.app_name
+        # self.set_icon_name(self.app_id)
         self.indicator = None
         self.current_timer = None
         self.previous_state = None
@@ -115,11 +116,6 @@ class App(Gtk.Application):
         self.time_elapsed = 0
         self.suppress_desktop_notifications = False
         self.ease_in_mode_enabled = False
-
-        self.logo_path = "../assets/logo.png"
-        self.logo_path = os.path.join(CWD, self.logo_path)
-
-        self.logo = GdkPixbuf.Pixbuf.new_from_file_at_scale(self.logo_path, 64, 64, True)
 
         notify2.init(self.app_id)
 
@@ -312,7 +308,7 @@ class App(Gtk.Application):
     def send_desktop_notification(self, message, action=None):
         if not self.suppress_desktop_notifications:
             n = notify2.Notification(self.title, message)
-            n.set_icon_from_pixbuf(self.logo)
+            n.set_icon_from_pixbuf(self.get_app_icon_pixbuf(64))
             if action and self.action_support:
                 action, label, callback, data = action
                 n.add_action(action, label, callback, data)
@@ -393,8 +389,8 @@ class App(Gtk.Application):
     def on_about(self, action, param=None):
         if not self.about_dialog:
             self.about_dialog = Gtk.AboutDialog()
-            self.about_dialog.set_logo(self.logo)
             self.about_dialog.set_authors(["Göktuğ Kayaalp <self@gkayaalp.com>"])
+            self.about_dialog.set_logo(self.get_app_icon_pixbuf(64))
             self.about_dialog.set_comments(_("Simple Pomodoro Timer."))
             self.about_dialog.set_copyright(
                 _("Copyright (C) 2019, 2020 Göktuğ Kayaalp <self@gkayaalp.com>"))
@@ -460,6 +456,14 @@ class App(Gtk.Application):
     def get_pomodoro_count_label(self):
         return _("Pomodoros completed: {}").format(self.pomodoro_count)
 
+
+    def get_app_icon_pixbuf(self, size):
+        return Gtk.IconTheme.get_default().load_icon(self.app_id, size, 0)
+
+    def get_app_icon_path(self, size):
+        return Gtk.IconTheme.get_default().lookup_icon(
+            self.app_id, size, 0
+        ).get_filename()
 
 
 
