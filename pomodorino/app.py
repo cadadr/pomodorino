@@ -1,5 +1,5 @@
 # Pomodorino --- Simple Pomodoro timer app
-# Copyright (C) 2019, 2020  Göktuğ Kayaalp <self at gkayaalp dot com>
+# Copyright (C) 2019, 2020, 2021  Göktuğ Kayaalp <self at gkayaalp dot com>
 #
 # This file is part of Pomodorino.
 #
@@ -208,7 +208,7 @@ class App(Gtk.Application):
             assert self.state in [States.AFTER_POMODORO, States.INITIAL]
         else:
             assert self.state == States.AFTER_POMODORO
-        
+
         self.advance_state()    # after_pomodoro -> break
         self.advance_state()    # break -> pomodoro
         assert self.state == States.AFTER_BREAK
