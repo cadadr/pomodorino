@@ -30,32 +30,6 @@ Francesco Cirillo).
 
 ## Installation
 
-Currently the only available binary releases are [AppImages], though
-source installation should be pretty straight-forward.  When the first
-0.1.0 release is done, more packaging work will take place.
-
-[AppImages]: https://appimage.org/
-
-### AppImage
-
-Download the `.AppImage` file attached to the [latest
-release][releases], and make it executable using the `chmod 750
-<FILENAME>` command.  App should launch upon double-clicking the
-AppImage. [AppImaged] provides better integration of AppImages to
-[FreeDesktop] environments.
-
-[releases]: https://github.com/cadadr/pomodorino/releases
-[AppImaged]: https://github.com/AppImage/appimaged/
-[FreeDesktop]: https://www.freedesktop.org/wiki/
-
-#### Building the AppImage
-
-The AppImage is currently built using
-[`scripts/appimage.bash`](scripts/appimage.bash). Just run it as
-follows at the project root, the AppImage will appear at `dist/`.
-This should be done **after** running `poetry install` **and** `poetry
-build`.
-
 ### Source installation
 
 We use [Poetry] for project management, so installing that is a
