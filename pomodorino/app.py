@@ -403,11 +403,11 @@ class App(Gtk.Application):
             # about_dialog.set_documenters(...)
             # about_dialog.set_translator_credits(...)
             # about_dialog.set_artists(...)
-            self.about_dialog.connect('destroy', self.on_about)
+            self.about_dialog.connect('response', self.on_about)
             self.about_dialog.show()
 
         else:
-            self.about_dialog.close()
+            self.about_dialog.destroy()
             self.about_dialog = None
 
         self.indicator.menu_about.set_sensitive(not self.about_dialog)
