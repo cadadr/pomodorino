@@ -1,6 +1,7 @@
 dist/
+assets/mo/
 
 *.AppImage
 *.pyc
 *.egg-info
-assets/mo/
+*.compiled

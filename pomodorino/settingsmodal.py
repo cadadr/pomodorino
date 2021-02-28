@@ -1,5 +1,5 @@
 # Pomodorino --- Simple Pomodoro timer app
-# Copyright (C) 2020  Göktuğ Kayaalp <self at gkayaalp dot com>
+# Copyright (C) 2020, 2021  Göktuğ Kayaalp <self at gkayaalp dot com>
 #
 # This file is part of Pomodorino.
 #
@@ -48,11 +48,11 @@ class SettingsModal(Gtk.Window):
         self.grid_row = 0
 
         self.pomodoro_spinner = self.make_time_spinner_and_attach(
-            _("Pomodoro length (minutes):"), self.app.states.POMODORO)
+            _("Pomodoro duration (minutes):"), self.app.states.POMODORO)
         self.short_break_spinner = self.make_time_spinner_and_attach(
-            _("Short break length (minutes):"), self.app.states.SHORT_BREAK)
+            _("Short break duration (minutes):"), self.app.states.SHORT_BREAK)
         self.long_break_spinner = self.make_time_spinner_and_attach(
-            _("Long break length (minutes):"), self.app.states.LONG_BREAK)
+            _("Long break duration (minutes):"), self.app.states.LONG_BREAK)
 
         self.add_label(_("Desktop notifications:"))
         self.suppress_desktop_notifs_switch = Gtk.Switch()
@@ -73,19 +73,6 @@ class SettingsModal(Gtk.Window):
         self.ease_in_mode_switch.set_halign(Gtk.Align.CENTER)
         self.add_control(self.ease_in_mode_switch)
 
-
-        self.defaults_button = Gtk.Button.new_with_mnemonic(label=_("De_faults"))
-        self.defaults_button.connect("clicked", lambda x: self.app.on_defaults(x, None))
-        self.grid.attach(self.defaults_button, 1, self.grid_row, 1, 1)
-
-        self.undo_button = Gtk.Button.new_with_mnemonic(label=_("_Undo"))
-        self.undo_button.connect(
-            "clicked", lambda x: self.app.on_settings_undone(x, None))
-        self.grid.attach(self.undo_button, 0, self.grid_row, 1, 1)
-
-        self.done_button = Gtk.Button.new_with_mnemonic(label=_("_Done"))
-        self.done_button.connect("clicked", lambda _: self.close())
-        self.add_control(self.done_button)
 
         self.add(self.grid)
 
@@ -116,7 +103,10 @@ class SettingsModal(Gtk.Window):
         spinner.set_snap_to_ticks(True)
         spinner.set_update_policy(Gtk.SpinButtonUpdatePolicy.IF_VALID)
 
-        spinner.connect("value_changed", lambda x: self.app.on_minutes_adjusted(x, state))
+        spinner.connect(
+            "value_changed",
+            lambda x: self.app.on_minutes_adjusted(x, state)
+        )
 
         self.add_control(spinner)
 

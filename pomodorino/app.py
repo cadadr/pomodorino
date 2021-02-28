@@ -81,18 +81,6 @@ class States(Enum):
     AFTER_BREAK = 6
 
 
-PHASE_SECONDS_DEFAULTS = {
-    States.INITIAL: 0,
-    States.POMODORO: 25 * 60,
-    States.AFTER_POMODORO: 0,
-    States.SHORT_BREAK: 5 * 60,
-    States.LONG_BREAK: 15 * 60,
-    States.AFTER_BREAK: 0,
-}
-
-SUPPRESS_DESKTOP_NOTIFICATIONS_DEFAULT = False
-EASE_IN_MODOE_ENABLED_DEFAULT = False
-
 BUTTON_LABELS = {
     States.INITIAL: _("Get going!"),
     States.POMODORO: _("Cancel"),
@@ -117,15 +105,16 @@ class App(Gtk.Application):
         self.current_timer = None
         self.previous_state = None
         self.paused = False
+        self.gsettings = Gio.Settings.new(self.app_id)
         self.settings_popup = None
         self.about_dialog = None
         self.state = States.INITIAL
         self.pomodoro_count = 0
-        self.phase_seconds = copy.deepcopy(PHASE_SECONDS_DEFAULTS)
-        self.timer_seconds = self.phase_seconds[self.state]
+        self.phase_seconds = {}
+        self.timer_seconds = 0
         self.time_elapsed = 0
-        self.suppress_desktop_notifications = SUPPRESS_DESKTOP_NOTIFICATIONS_DEFAULT
-        self.ease_in_mode_enabled = EASE_IN_MODOE_ENABLED_DEFAULT
+        self.suppress_desktop_notifications = False
+        self.ease_in_mode_enabled = False
 
         self.logo_path = "../assets/logo.png"
         self.logo_path = os.path.join(CWD, self.logo_path)
@@ -137,6 +126,50 @@ class App(Gtk.Application):
         self.action_support = "actions" in notify2.get_server_caps()
         if not self.action_support:
             print(_("Notifications server does not support actions"))
+
+
+    def load_gsettings(self):
+        self.suppress_desktop_notifications = not self.gsettings.get_boolean('desktop-notifications-enabled')
+        self.ease_in_mode_enabled = self.gsettings.get_boolean('ease-in-mode-enabled')
+        self.phase_seconds = self.compute_phase_seconds()
+
+
+    def compute_phase_seconds(self):
+        pomodoro = self.gsettings.get_int('pomodoro-duration')
+        short_break = self.gsettings.get_int('short-break-duration')
+        long_break = self.gsettings.get_int('long-break-duration')
+
+        return {
+            States.INITIAL: 0,
+            States.POMODORO: pomodoro * 60,
+            States.AFTER_POMODORO: 0,
+            States.SHORT_BREAK: short_break * 60,
+            States.LONG_BREAK: long_break * 60,
+            States.AFTER_BREAK: 0,
+        }
+
+
+    def write_gsettings(self):
+        self.gsettings.set_boolean(
+            'desktop-notifications-enabled',
+            not self.suppress_desktop_notifications
+        )
+        self.gsettings.set_boolean(
+            'ease-in-mode-enabled',
+            self.ease_in_mode_enabled
+        )
+        self.gsettings.set_int(
+            'pomodoro-duration',
+            divmod(self.phase_seconds[States.POMODORO], 60)[0]
+        )
+        self.gsettings.set_int(
+            'short-break-duration',
+            divmod(self.phase_seconds[States.SHORT_BREAK], 60)[0]
+        )
+        self.gsettings.set_int(
+            'long-break-duration',
+            divmod(self.phase_seconds[States.LONG_BREAK], 60)[0]
+        )
 
 
     def do_startup(self):
@@ -161,6 +194,9 @@ class App(Gtk.Application):
         action = Gio.SimpleAction.new("quit", None)
         action.connect("activate", self.on_quit)
         self.add_action(action)
+
+        self.load_gsettings()
+        self.timer_seconds = self.phase_seconds[self.state]
 
 
     def do_activate(self):
@@ -309,22 +345,19 @@ class App(Gtk.Application):
     def on_minutes_adjusted(self, action, param=None):
         value = action.get_value_as_int()
         self.phase_seconds[param] = value * 60
+        self.write_gsettings()
         self.indicator.update()
 
 
     def on_suppress_desktop_notifs_switch_set(self, action, param=None):
         self.suppress_desktop_notifications = not param
+        self.write_gsettings()
 
 
     def on_ease_in_mode_switch_set(self, action, param=None):
         self.ease_in_mode_enabled = param
+        self.write_gsettings()
         self.indicator.update()
-
-
-    def on_defaults(self, action, param=None):
-        self.phase_seconds = copy.deepcopy(PHASE_SECONDS_DEFAULTS)
-        self.suppress_desktop_notifications = SUPPRESS_DESKTOP_NOTIFICATIONS_DEFAULT
-        self.settings_popup.update()
 
 
     def on_reset(self, action, param=None):

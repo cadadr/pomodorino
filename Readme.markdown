@@ -30,6 +30,10 @@ Francesco Cirillo).
 
 ## Installation
 
+Currently, it’s recommended to avoid installing Pomodorino, as it is
+in an experimental state.  Soon, distribution packages will be
+provided.  For now, use the `run.sh` script at the repository root.
+
 ### Source installation
 
 We use [Poetry] for project management, so installing that is a

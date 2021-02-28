@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+
+  <schema id="com.gkayaalp.pomodorino" path="/com/gkayaalp/pomodorino/">
+
+    <key type="i" name="pomodoro-duration">
+      <default>25</default>
+      <summary>Pomodoro duration (minutes)</summary>
+      <description>Duration of a pomodoro session in
+      minutes.</description>
+    </key>
+
+    <key type="i" name="short-break-duration">
+      <default>5</default>
+      <summary>Short break duration (minutes)</summary>
+      <description>Duration of a short break in minutes.</description>
+    </key>
+
+    <key type="i" name="long-break-duration">
+      <default>15</default>
+      <summary>Long break duration (minutes)</summary>
+      <description>Duration of a long break in minutes.</description>
+    </key>
+
+    <key type="b" name="desktop-notifications-enabled">
+      <default>true</default>
+      <summary>Desktop notifications enabled</summary>
+      <description>Whether or not to use desktop notifications on
+      state changes.</description>
+    </key>
+
+    <key type="b" name="ease-in-mode-enabled">
+      <default>false</default>
+      <summary>Ease-in mode enabled</summary>
+      <description>Whether or not to have an ease-in duration, i.e. a
+      short break, before the initial pomodoro.</description>
+    </key>
+
+  </schema>
+
+</schemalist>
