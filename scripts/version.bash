@@ -12,8 +12,8 @@ fi
 
 V="$1"
 
-sed -Ei 's/^(version = ).*/\1"'"$V"'"/' pyproject.toml
-grep -H ^version pyproject.toml
+sed -Ei 's/^(    version=).*/\1"'"$V"'"/' setup.py
+grep -H '^    version' setup.py
 
 sed -Ei 's/^(VERSION = ).*/\1"'"$V"'"/' pomodorino/app.py
 grep -H ^VERSION pomodorino/app.py

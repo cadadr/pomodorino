@@ -1,0 +1,10 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+override_dh_auto_install:
+	python3 -B setup.py install --root=debian/pomodorino \
+		--install-layout=deb --install-scripts=/usr/bin/
+
+override_dh_auto_build:

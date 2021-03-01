@@ -1,0 +1,22 @@
+Source: pomodorino
+Maintainer: Göktuğ Kayaalp <self@gkayaalp.com>
+Section: utils
+Priority: optional
+Standards-Version: 3.9.2
+Build-Depends: debhelper (>= 9), python3
+
+Package: pomodorino
+Architecture: all
+Depends: python3, python3-gi, python3-gi-cairo, python3-notify2, python3-dbus
+Description: Simple GTK+ Pomodoro(TM) applet
+ Pomodorino is a lightweight, simple Pomodoro timer system tray
+ application written using Python 3 and GTK 3.
+ .
+ What sets it apart is that it’s totally FOSS (licensed under GPLv3+)
+ and really lightweight.  Alternative Linux apps that I could find were
+ either paid and proprietrary or they used rather heavy technologies
+ like Electron.
+ .
+ Using Pomodorino should be rather straight-forward if you know about
+ the Pomodoro Technique(R) (which is a registered trademark of
+ Francesco Cirillo).

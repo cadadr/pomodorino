@@ -13,6 +13,6 @@ Exec=pomodorino
 Terminal=false
 X-MultipleArgs=false
 Type=Application
-Icon=pomodorino
+Icon=com.gkayaalp.pomodorino
 Categories=Utility;Office;Education;Clock;GNOME;GTK;
 StartupNotify=true

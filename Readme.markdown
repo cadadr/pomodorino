@@ -28,54 +28,114 @@ Francesco Cirillo).
 - [notify2](https://pypi.org/project/notify2/)
 - [dbus-python](https://pypi.org/project/dbus-python/)
 
-## Installation
+## Building and Installation
 
-Currently, it’s recommended to avoid installing Pomodorino, as it is
-in an experimental state.  Soon, distribution packages will be
-provided.  For now, use the `run.sh` script at the repository root.
+### Building the sources
 
-### Source installation
+This project uses `setuptools` for builds, and the procedure is
+straightforward.
 
-We use [Poetry] for project management, so installing that is a
-prerequisite:
+1. Optionally, create a virtual environment:
 
-    pip3 install --user poetry
+    $ python3 -m venv .venv
+    $ ./.bin/venv/activate
 
-[Poetry]:https://python-poetry.org/
+2. Install the `build` package, and Pomodorino’s dependencies:
 
-After that, at the project root, run the following commands:
+    $ pip install build
+    $ pip install -r requirements.txt
 
-    poetry install
-    poetry build
-    pip3 install ./dist/pomodorino-0.1.0b1-py3-none-any.whl
+3. Run build:
 
-where the `0.1.0b1` bit is the package version; so update the command
-as necessary if the current version is different.
+    $ python -m build
 
-These steps should’ve installed Pomodorino and it’s dependencies under
-some path that’s known to Python, possibly `~/.local/share` and
-`~/.local/bin`. Add that latter one to the `PATH` environment
-variable.
+4. You may install the package using the wheel file generated under
+   ‘dist/’, tho this is discouraged as data files will not be
+   installed and the application will crash.  You can use `./run.sh`,
+   as detailed below, to run without installing.
 
-For FreeDesktop environments, there is [a .desktop
-file](assets/pomodorino.desktop) included under the `assets/`
-directory. You can copy that and the icon to appropriate places to
-have a menu entry for running Pomodorino:
+### Building a Debian package
 
-    cp assets/pomodorino.desktop ~/.local/share/applications
-    cp assets/logo.png ~/.local/share/icons/hicolor/512x512/apps/pomodorino.png
+Building the Debian package is simple:
+
+1. Install `devscripts`:
+
+    $ sudo apt-get install devscripts
+
+2. Run the following command to invoke `debuild`:
+
+    $ debuild -i -us -uc -b
+
+3. Relevant files, including the Debian package itself, will be output
+   to the parent directory of your working directory.
+
+### Running from source repository
+
+A script, `run.sh`, is included to help with testing, it sets up an
+environment in which Pomodorino can be run without a global
+installation, out of a virtual environment.  The script assumes that
+the virtual environment is at `$PWD/.venv`, but it’s trivial to modify
+if you wish to keep the virtual environment elsewhere.  The
+preparation is as follows:
+
+1. Create a virtual environment:
+
+    $ python3 -m venv .venv
+
+2. Install Pomodorino’s dependencies:
+
+    $ ./.venv/bin/pip install -r requirements.txt
+
+3. Run Pomodorino:
+
+    $ ./run.sh
 
 ## Contributing & Issues
 
-Contributions are welcome!  This section will be expanded prior to
-initial publication.
+Contributions are welcome!  Please submit a pull request or e-mail a
+patch. Explain clearly your changes and the rationale for them, and
+include a clear commit message, prefixed with the relevant filename.
 
-Please report issues at the [issue
+Please write your commit message as in the example below:
+
+    path/to/file.ext: imperative-mood summary of changes
+
+    Optionally further explain the change.
+
+A commit that only adds one file should read as follows:
+
+    Add path/to/file
+
+A commit that only removes one file should read as follows:
+
+    Remove path/to/file
+
+When including paths, if multiple files under a common directory are
+concerned, the directory’s path itself will suffice:
+
+    pomodorino: reticulate splines
+
+If your patch fixes a typo, please indicate the fix in the message as
+follows:
+
+    ; path/to/file: fix typo `orig' -> `fixed'
+
+Please do not send whitespace-only patches or patches that touch
+whitespace in places other that it actually makes changes.
+
+Please write elaborate commit messages and pull request texts that
+sufficiently detail and motivate your changes.  Please care to make
+atomic commits, and please create separate issues and / or pull
+requests if you’re reporting multiple problems and / or suggesting
+multiple features.
+
+Issues can be reported at the [issue
 tracker](https://github.com/cadadr/pomodorino/issues).
 
 ## Licence
 
-Pomodorino is licenced under GPLv3 or later.
+Pomodorino is licenced under GNU General Public Licence, version 3 or
+later.
 
     Pomodorino --- Simple Pomodoro timer app
     Copyright (C) 2019, 2020  Göktuğ Kayaalp <self at gkayaalp dot com>

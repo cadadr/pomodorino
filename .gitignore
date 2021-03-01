@@ -1,6 +1,12 @@
+build/
 dist/
 assets/mo/
-.fake_home
+.fake_home/
+.venv/
+
+debian/pomodorino*
+debian/files
+debian/.debhelper/
 
 *.AppImage
 *.pyc
