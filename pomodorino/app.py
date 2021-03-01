@@ -42,34 +42,8 @@ import sys
 
 APP_ID = "com.gkayaalp.pomodorino"
 
-CWD = "."
-try:
-    CWD = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
-except NameError:
-    pass
-
-LOCALE_DIR = os.path.abspath(os.path.join(CWD, '../assets/mo'))
-
-try:
-    locale.setlocale(locale.LC_ALL, '')
-    locale.bindtextdomain(APP_ID, LOCALE_DIR)
-
-    # HACK(2020-04-23): gettext.find uses envvars instead of the locale
-    # module. This is a workaround.
-    os.environ["LANGUAGE"] = locale.getlocale(locale.LC_MESSAGES)[0].split("_")[0]
-except locale.Error:
-    pass
-
-gettext.bindtextdomain(APP_ID, LOCALE_DIR)
-gettext.textdomain(APP_ID)
-gettext.install(APP_ID)
-_ = gettext.gettext
-
-
-
 VERSION = "0.1.0b5"
 
-CLOCK_RESOLUTION = 1000
 
 @unique
 class States(Enum):
@@ -81,16 +55,6 @@ class States(Enum):
     AFTER_BREAK = 6
 
 
-BUTTON_LABELS = {
-    States.INITIAL: _("Get going!"),
-    States.POMODORO: _("Cancel"),
-    States.AFTER_POMODORO: _("Start break"),
-    States.SHORT_BREAK: _("Cancel"),
-    States.LONG_BREAK: _("Cancel"),
-    States.AFTER_BREAK: _("Start new pomodoro"),
-}
-
-
 class App(Gtk.Application):
 
     app_id = APP_ID
@@ -98,11 +62,11 @@ class App(Gtk.Application):
 
     states = States
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, clock_resolution, *args, **kwargs):
         super().__init__(*args, application_id=self.app_id, **kwargs)
         self.title = self.app_name
-        # self.set_icon_name(self.app_id)
         self.indicator = None
+        self.clock_resolution = clock_resolution
         self.current_timer = None
         self.previous_state = None
         self.paused = False
@@ -116,6 +80,14 @@ class App(Gtk.Application):
         self.time_elapsed = 0
         self.suppress_desktop_notifications = False
         self.ease_in_mode_enabled = False
+        self.button_labels = {
+            States.INITIAL: _("Get going!"),
+            States.POMODORO: _("Cancel"),
+            States.AFTER_POMODORO: _("Start break"),
+            States.SHORT_BREAK: _("Cancel"),
+            States.LONG_BREAK: _("Cancel"),
+            States.AFTER_BREAK: _("Start new pomodoro"),
+        }
 
         notify2.init(self.app_id)
 
@@ -269,7 +241,9 @@ class App(Gtk.Application):
             message = _("Started long break")
 
         if self.timer_seconds > 0:
-            self.current_timer = GLib.timeout_add(CLOCK_RESOLUTION, self.tick)
+            self.current_timer = GLib.timeout_add(
+                self.clock_resolution, self.tick
+            )
 
         if message:
             self.send_desktop_notification(message)
@@ -431,8 +405,8 @@ class App(Gtk.Application):
             if self.state == States.INITIAL:
                 return _("Ease in!")
             if self.pomodoro_count == 0 and self.state == States.AFTER_BREAK:
-                return BUTTON_LABELS[States.INITIAL]
-        return BUTTON_LABELS[self.state]
+                return self.button_labels[States.INITIAL]
+        return self.button_labels[self.state]
 
 
     # TODO(2020-04-22): window removed, this can go into the
@@ -468,7 +442,30 @@ class App(Gtk.Application):
 
 
 def main():
-    app = App()
+    # Use translations from path run.sh provides, if applicable.
+    locale_dir = None
+    try:
+        locale_dir = os.environ['DEBUG_LOCALE_DIR']
+        print("Locale directory: ", locale_dir)
+    except KeyError:
+        pass
+
+    # Run clock quicker when debugging / testing.
+    clock_resolution = 1000
+    try:
+        clock_resolution = int(os.environ["DEBUG_CLOCK_RESOLUTION"])
+        print("Clock resolution, msecs per second: ",
+              clock_resolution)
+    except KeyError:
+        pass
+
+    gettext.bindtextdomain(APP_ID, locale_dir)
+    gettext.textdomain(APP_ID)
+    gettext.install(APP_ID)
+    global _
+    _ = gettext.gettext
+
+    app = App(clock_resolution)
     app.run(sys.argv)
 
 
