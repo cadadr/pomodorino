@@ -37,7 +37,7 @@ with other GTK+ applications:
 **-h, --help**
 : Show help options
 
-**help-all**
+**--help-all**
 : Show all help options
 
 **--help-gapplication**
