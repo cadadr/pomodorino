@@ -1,6 +1,6 @@
 # Pomodorino
 
-<img src="assets/logo.png" width=64px alt="Pomodorino logo"/>
+<p align="center"><img src="assets/logo.png" width=64px alt="Pomodorino logo" /></p>
 
 **WORK IN PROGRESS**
 
