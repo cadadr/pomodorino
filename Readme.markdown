@@ -118,7 +118,7 @@ A commit that only removes one file should read as follows:
 When including paths, if multiple files under a common directory are
 concerned, the directory’s path itself will suffice:
 
-    pomodorino: reticulate splines
+    src/pomodorino: reticulate splines
 
 If your patch fixes a typo, please indicate the fix in the message as
 follows:

@@ -11,7 +11,7 @@ xgettext --sort-output --from-code UTF-8                                \
          --copyright-holder="Göktuğ Kayaalp <self at gkayaalp dot com>" \
          --package-name=Pomodorino                                      \
          --msgid-bugs-address="<self at gkayaalp dot com>"              \
-         pomodorino/*.py
+         src/pomodorino/*.py
 
 for pofile in po/*.po; do
     echo Update $pofile...

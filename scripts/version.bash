@@ -16,4 +16,4 @@ sed -Ei 's/^(    version=).*/\1"'"$V"'",/' setup.py
 grep -H '^    version' setup.py
 
 sed -Ei 's/^(VERSION = ).*/\1"'"$V"'"/' pomodorino/app.py
-grep -H ^VERSION pomodorino/app.py
+grep -H ^VERSION src/pomodorino/app.py

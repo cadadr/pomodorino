@@ -60,7 +60,8 @@ setuptools.setup(
         "Topic :: Office/Business :: Scheduling",
         "Topic :: Utilities",
     ],
-    packages=setuptools.find_packages(),
+    package_dir={'': 'src'},
+    packages=setuptools.find_packages("src"),
     python_requires=">=3.5",
     data_files=collect_data_files(),
     entry_points={
