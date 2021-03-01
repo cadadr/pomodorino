@@ -67,7 +67,7 @@ _ = gettext.gettext
 
 
 
-VERSION = "0.1.0b4"
+VERSION = "0.1.0b5"
 
 CLOCK_RESOLUTION = 1000
 
