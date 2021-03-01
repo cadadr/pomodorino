@@ -1,3 +1,12 @@
+pomodorino (0.1.0b6) trusty; urgency=medium
+
+  * 6th Beta release of v0.1.0.
+  * The way gettext is used is overhauled.
+  * Global state is eliminated.
+  * No user facing changes in this release.
+
+ -- Göktuğ Kayaalp <self@gkayaalp.com>  Mon, 01 Mar 2021 12:00:00 +0300
+
 pomodorino (0.1.0b5) trusty; urgency=medium
 
   * 5th Beta release of v0.1.0.

@@ -42,7 +42,7 @@ def collect_data_files():
 
 setuptools.setup(
     name="pomodorino",
-    version="0.1.0b5",
+    version="0.1.0b6",
     author="Göktuğ Kayaalp",
     author_email="self@gkayaalp.com",
     description="Simple GTK+ Pomodoro(TM) applet",
