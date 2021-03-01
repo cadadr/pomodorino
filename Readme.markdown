@@ -37,17 +37,17 @@ straightforward.
 
 1. Optionally, create a virtual environment:
 
-    $ python3 -m venv .venv
-    $ ./.bin/venv/activate
+       $ python3 -m venv .venv
+       $ ./.bin/venv/activate
 
 2. Install the `build` package, and Pomodorino’s dependencies:
 
-    $ pip install build
-    $ pip install -r requirements.txt
+       $ pip install build
+       $ pip install -r requirements.txt
 
 3. Run build:
 
-    $ python -m build
+       $ python -m build
 
 4. You may install the package using the wheel file generated under
    ‘dist/’, tho this is discouraged as data files will not be
@@ -60,11 +60,11 @@ Building the Debian package is simple:
 
 1. Install `devscripts`:
 
-    $ sudo apt-get install devscripts
+       $ sudo apt-get install devscripts
 
 2. Run the following command to invoke `debuild`:
 
-    $ debuild -i -us -uc -b
+       $ debuild -i -us -uc -b
 
 3. Relevant files, including the Debian package itself, will be output
    to the parent directory of your working directory.
@@ -80,15 +80,15 @@ preparation is as follows:
 
 1. Create a virtual environment:
 
-    $ python3 -m venv .venv
+       $ python3 -m venv .venv
 
 2. Install Pomodorino’s dependencies:
 
-    $ ./.venv/bin/pip install -r requirements.txt
+       $ ./.venv/bin/pip install -r requirements.txt
 
 3. Run Pomodorino:
 
-    $ ./run.sh
+       $ ./run.sh
 
 ## Contributing & Issues
 
