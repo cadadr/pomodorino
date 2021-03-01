@@ -143,7 +143,7 @@ Pomodorino is licenced under GNU General Public Licence, version 3 or
 later.
 
     Pomodorino --- Simple Pomodoro timer app
-    Copyright (C) 2019, 2020  Göktuğ Kayaalp <self at gkayaalp dot com>
+    Copyright (C) 2019, 2020, 2021  Göktuğ Kayaalp <self at gkayaalp dot com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
