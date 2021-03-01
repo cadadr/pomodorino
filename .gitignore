@@ -9,6 +9,7 @@ data/gettext/
 debian/pomodorino*
 debian/files
 debian/.debhelper/
+doc/pomodorino.1
 po/compile.report
 
 *.AppImage

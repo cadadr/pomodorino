@@ -16,6 +16,11 @@ def compile_translations():
     ret.check_returncode()      # raises if nonzero
 
 
+def compile_docs():
+    ret = subprocess.run(["bash", "scripts/compile-docs.bash"])
+    ret.check_returncode()      # raises if nonzero
+
+
 def collect_data_files():
     f1 = "share/icons/hicolor/{n}x{n}/apps"
     f2 = "assets/icons/hicolor/{n}x{n}/apps/{i}.png"
@@ -25,6 +30,7 @@ def collect_data_files():
     gsettings_schema = "data/{i}.gschema.xml".format(i=app_id)
 
     compile_translations()
+    compile_docs()
 
     langs = [*map(lambda s: s.split('/')[-1], glob("data/gettext/*"))]
     f3 = "share/locale/{lang}/LC_MESSAGES/"
@@ -35,6 +41,7 @@ def collect_data_files():
     return [
         *icons,
         *translations,
+        ("share/man/man1", ["doc/pomodorino.1"]),
         ("share/glib-2.0/schemas/", [gsettings_schema]),
         ("share/applications/", ["assets/pomodorino.desktop"]),
     ]
