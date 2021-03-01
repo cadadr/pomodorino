@@ -1,10 +1,20 @@
+# setup.py
+
 from glob import glob
+
 import setuptools
+import subprocess
 
 app_id = "com.gkayaalp.pomodorino"
 
 with open("Readme.markdown", "r") as f:
     long_description = f.read()
+
+
+def compile_translations():
+    ret = subprocess.run(["bash", "scripts/compile-translations.bash"])
+    ret.check_returncode()      # raises if nonzero
+
 
 def collect_data_files():
     f1 = "share/icons/hicolor/{n}x{n}/apps"
@@ -13,11 +23,22 @@ def collect_data_files():
     icons = [(f1.format(n=n), [f2.format(n=n, i=app_id)])
              for n in sizes]
     gsettings_schema = "data/{i}.gschema.xml".format(i=app_id)
+
+    compile_translations()
+
+    langs = [*map(lambda s: s.split('/')[-1], glob("data/gettext/*"))]
+    f3 = "share/locale/{lang}/LC_MESSAGES/"
+    f4 = "data/gettext/{lang}/LC_MESSAGES/{app_id}.mo"
+    translations = [(f3.format(lang=l), [f4.format(lang=l, app_id=app_id)])
+                    for l in langs]
+
     return [
         *icons,
+        *translations,
         ("share/glib-2.0/schemas/", [gsettings_schema]),
         ("share/applications/", ["assets/pomodorino.desktop"]),
     ]
+
 
 setuptools.setup(
     name="pomodorino",
