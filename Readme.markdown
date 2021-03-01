@@ -75,8 +75,13 @@ A script, `run.sh`, is included to help with testing, it sets up an
 environment in which Pomodorino can be run without a global
 installation, out of a virtual environment.  The script assumes that
 the virtual environment is at `$PWD/.venv`, but it’s trivial to modify
-if you wish to keep the virtual environment elsewhere.  The
-preparation is as follows:
+if you wish to keep the virtual environment elsewhere.  **Beware**
+what by default this script sets up Pomodorino such that the clock is
+run 100x faster than normal, in order to facilitate testing.  In order
+to use `run.sh` for general use of Pomodorino, you should modify the
+script to not export the variable `DEBUG_CLOCK_RESOLUTION`.
+
+The preparation for using `run.sh` is as follows:
 
 1. Create a virtual environment:
 
