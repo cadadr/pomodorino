@@ -36,7 +36,6 @@ from enum import Enum, unique
 
 import copy
 import gettext
-import locale
 import os
 import sys
 
