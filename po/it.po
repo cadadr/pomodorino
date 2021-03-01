@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pomodorino\n"
 "Report-Msgid-Bugs-To: <self at gkayaalp dot com>\n"
-"POT-Creation-Date: 2020-04-23 03:24+0300\n"
+"POT-Creation-Date: 2021-03-01 15:47+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Göktuğ Kayaalp <self at gkayaalp dot com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,123 +17,159 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: pomodorino/indicator.py:80
+#: pomodorino/indicator.py:86
 msgid "About"
 msgstr "Informazione"
 
-#: pomodorino/app.py:66 pomodorino/app.py:68 pomodorino/app.py:69
-#: pomodorino/app.py:312
+#: pomodorino/app.py:86 pomodorino/app.py:88 pomodorino/app.py:89
+#: pomodorino/app.py:418
 msgid "Cancel"
 msgstr "Cancella"
 
-#: pomodorino/app.py:198
+#: pomodorino/app.py:295
+#, fuzzy
+msgid "Completed ease-in period"
+msgstr "Pomodoro è finito"
+
+#: pomodorino/app.py:299
 msgid "Completed long break"
 msgstr "Pausa lunga è finita"
 
-#: pomodorino/app.py:193
+#: pomodorino/app.py:288
 msgid "Completed pomodoro"
 msgstr "Pomodoro è finito"
 
-#: pomodorino/app.py:196
+#: pomodorino/app.py:297
 msgid "Completed short break"
 msgstr "Pausa breve è finita"
 
-#: pomodorino/app.py:290
+#: pomodorino/app.py:396
 msgid "Copyright (C) 2019, 2020 Göktuğ Kayaalp <self@gkayaalp.com>"
 msgstr ""
 
-#: pomodorino/settingsmodal.py:68
-msgid "De_faults"
-msgstr "_Predefiniti"
-
-#: pomodorino/settingsmodal.py:59
+#: pomodorino/settingsmodal.py:57
 msgid "Desktop notifications:"
 msgstr "Notificazioni desktop:"
 
-#: pomodorino/app.py:65
+#: pomodorino/app.py:432
+msgid "Ease in!"
+msgstr ""
+
+#: pomodorino/settingsmodal.py:67
+msgid "Ease-in mode:"
+msgstr ""
+
+#: pomodorino/app.py:85
 msgid "Get going!"
 msgstr "Va’!"
 
-#: pomodorino/settingsmodal.py:57
-msgid "Long break length (minutes):"
+#: pomodorino/settingsmodal.py:55
+#, fuzzy
+msgid "Long break duration (minutes):"
 msgstr "Durata delle pause lunghe (minuti):"
 
-#: pomodorino/indicator.py:68 pomodorino/indicator.py:113
+#: pomodorino/app.py:124
+msgid "Notifications server does not support actions"
+msgstr ""
+
+#: pomodorino/indicator.py:70 pomodorino/indicator.py:126
 msgid "Pause"
 msgstr "Pausa"
 
-#: pomodorino/app.py:221
+#: pomodorino/app.py:325
 msgid "Pomodorino Settings"
 msgstr "Impostazioni Pomodorino"
 
-#: pomodorino/app.py:130 pomodorino/minimal.py:26
+#: pomodorino/app.py:201
 msgid "Pomodorino is ready!"
 msgstr "Pronto! Sono io, Pomodorino!"
 
-#: pomodorino/settingsmodal.py:53
-msgid "Pomodoro length (minutes):"
+#: pomodorino/settingsmodal.py:51
+#, fuzzy
+msgid "Pomodoro duration (minutes):"
 msgstr "Durata dei pomodoro (minuti):"
 
-#: pomodorino/app.py:346
+#: pomodorino/app.py:457
 msgid "Pomodoros completed: {}"
 msgstr "Pomodori compiuti: {}"
 
-#: pomodorino/indicator.py:77
+#: pomodorino/indicator.py:83
 msgid "Quit"
 msgstr "Esci"
 
-#: pomodorino/indicator.py:71
+#: pomodorino/indicator.py:77
 msgid "Reset"
 msgstr "Resetta"
 
-#: pomodorino/app.py:169 pomodorino/indicator.py:111
+#: pomodorino/app.py:260 pomodorino/indicator.py:124
 msgid "Resume"
 msgstr "Continua"
 
-#: pomodorino/indicator.py:74
+#: pomodorino/indicator.py:80
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: pomodorino/settingsmodal.py:55
-msgid "Short break length (minutes):"
+#: pomodorino/settingsmodal.py:53
+#, fuzzy
+msgid "Short break duration (minutes):"
 msgstr "Durata delle pause brevi (minuti):"
 
-#: pomodorino/app.py:288
+#: pomodorino/app.py:394
 msgid "Simple Pomodoro Timer."
 msgstr "Semplice Timer Pomodoro."
 
-#: pomodorino/app.py:67
+#: pomodorino/indicator.py:73
+#, fuzzy
+msgid "Skip break"
+msgstr "Avvia una pausa"
+
+#: pomodorino/app.py:251
+#, fuzzy
+msgid "Skipped a break"
+msgstr "Avvia una pausa"
+
+#: pomodorino/app.py:249
+msgid "Skipped ease-in period"
+msgstr ""
+
+#: pomodorino/app.py:87
 msgid "Start break"
 msgstr "Avvia una pausa"
 
-#: pomodorino/app.py:70 pomodorino/app.py:171
+#: pomodorino/app.py:90
 msgid "Start new pomodoro"
 msgstr "Avvia un nuovo pomodoro"
 
-#: pomodorino/app.py:175
+#: pomodorino/app.py:265
+#, fuzzy
+msgid "Started ease-in period"
+msgstr "Nuovo pomodoro avviato"
+
+#: pomodorino/app.py:269
 msgid "Started long break"
 msgstr "Pausa lunga avviata"
 
-#: pomodorino/app.py:173
+#: pomodorino/app.py:262
+msgid "Started new pomodoro"
+msgstr "Nuovo pomodoro avviato"
+
+#: pomodorino/app.py:267
 msgid "Started short break"
 msgstr "Pausa breve avviata"
 
-#: pomodorino/app.py:213
+#: pomodorino/app.py:317
 msgid "Suppressed desktop notification:"
 msgstr "Notificazione desktop repressa:"
 
-#: pomodorino/app.py:293
+#: pomodorino/app.py:399
 msgid "Website: {}"
 msgstr "Sito web: {}"
 
-#: pomodorino/settingsmodal.py:77
-msgid "_Done"
-msgstr "_Fatto"
+#~ msgid "De_faults"
+#~ msgstr "_Predefiniti"
 
-#: pomodorino/settingsmodal.py:72
-msgid "_Undo"
-msgstr "_Annulla modificazioni"
+#~ msgid "_Done"
+#~ msgstr "_Fatto"
 
-#: pomodorino/app.py:171
-msgid "Started new pomodoro"
-msgstr "Nuovo pomodoro avviato"
+#~ msgid "_Undo"
+#~ msgstr "_Annulla modificazioni"
