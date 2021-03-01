@@ -20,5 +20,8 @@ glib-compile-schemas "$GSETTINGS_SCHEMA_DIR"
 gtk-update-icon-cache
 
 export XDG_DATA_HOME GSETTINGS_SCHEMA_DIR
+export PYTHONPATH=.
+export DEBUG_LOCALE_DIR=data/gettext
+export DEBUG_CLOCK_RESOLUTION=10
 
 ./.venv/bin/python pomodorino/app.py
