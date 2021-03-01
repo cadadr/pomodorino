@@ -446,6 +446,7 @@ def main():
     try:
         locale_dir = os.environ['DEBUG_LOCALE_DIR']
         print("Locale directory: ", locale_dir)
+        print("Available locales: ", gettext.find(APP_ID, 'locales', all=True))
     except KeyError:
         pass
 
@@ -463,6 +464,12 @@ def main():
     gettext.install(APP_ID)
     global _
     _ = gettext.gettext
+
+    if "DEBUG_CHECK_GETTEXT" in os.environ:
+        print("LANGUAGE = ", os.environ["LANGUAGE"])
+        print("Following line should be translated:")
+        print("   => ", _("Pomodorino is ready!"))
+        exit()
 
     app = App(clock_resolution)
     app.run(sys.argv)
