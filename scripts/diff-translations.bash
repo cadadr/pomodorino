@@ -1,5 +1,9 @@
-#!/bin/sh
-# compare-with-pot.sh --- find differences from pot in po files.
+#!/usr/bin/env bash
+# diff-translations.bash --- compare PO files to the POT file
+
+# bash strict mode
+set -euo pipefail
+IFS=$'\n\t'
 
 pick(){
     grep ^msgid $1 | sort

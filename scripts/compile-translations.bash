@@ -1,7 +1,11 @@
-#!/bin/sh
-# compile-po.sh --- compile .po files
+#!/usr/bin/env bash
+# compile-translations.bash --- compile PO files and produce MO files
 
-modir=assets/mo
+# bash strict mode
+set -euo pipefail
+IFS=$'\n\t'
+
+modir=data/gettext
 appid=com.gkayaalp.pomodorino
 log=po/compile.report
 
