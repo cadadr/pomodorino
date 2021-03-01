@@ -4,9 +4,12 @@ assets/mo/
 .fake_home/
 .venv/
 
+
+data/gettext/
 debian/pomodorino*
 debian/files
 debian/.debhelper/
+po/compile.report
 
 *.AppImage
 *.pyc
