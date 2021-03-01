@@ -26,7 +26,7 @@ import gi
 
 gi.require_version('Gtk', '3.0')
 
-from gi.repository import Gtk, Gio, GLib, GdkPixbuf
+from gi.repository import Gtk, Gio, GLib
 import notify2
 
 from pomodorino.settingsmodal import SettingsModal
