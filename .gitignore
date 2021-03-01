@@ -12,3 +12,7 @@ debian/.debhelper/
 *.pyc
 *.egg-info
 *.compiled
+
+*~
+*\#
+*.swp
