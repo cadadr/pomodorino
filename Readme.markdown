@@ -157,3 +157,10 @@ later.
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+[Pomodorino’s logo](./assets/logo-unresized.png) as of v0.1.0b8 release was
+kindly provided to me by [Neville Park](https://nevillepark.ca/), who
+made it available under the term of the [Creative Commons 0
+Licence](https://creativecommons.org/publicdomain/zero/1.0/legalcode),
+the text of which is also reproduced in the
+[COPYING.CC0](./COPYING.CC0) file locally.
