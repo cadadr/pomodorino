@@ -19,7 +19,22 @@ Francesco Cirillo).
 [pt]: https://en.wikipedia.org/wiki/Pomodoro_Technique
 
 
-<img src="assets/screenshots/grouped.png" alt="screenshots of indicator menu and application windows" />
+<table>
+       <tr>
+              <td>
+                     <img src="assets/screenshots/about.png"
+                          alt="'About' popup" />
+              </td>
+              <td>
+                     <img src="assets/screenshots/menu.png"
+                          alt="Main menu" />
+              </td>
+              <td>
+                     <img src="assets/screenshots/settings.png"
+                          alt="Settings dialog" />
+              </td>
+       </tr>
+</table>
 
 ## Dependencies
 
