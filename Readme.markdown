@@ -126,7 +126,7 @@ follows:
     ; path/to/file: fix typo `orig' -> `fixed'
 
 Please do not send whitespace-only patches or patches that touch
-whitespace in places other that it actually makes changes.
+whitespace in places other than where it actually makes changes.
 
 Please write elaborate commit messages and pull request texts that
 sufficiently detail and motivate your changes.  Please care to make
@@ -160,7 +160,7 @@ later.
 
 [Pomodorino’s logo](./assets/logo-unresized.png) as of v0.1.0b8 release was
 kindly provided to me by [Neville Park](https://nevillepark.ca/), who
-made it available under the term of the [Creative Commons 0
+made it available under the terms of the [Creative Commons 0
 Licence](https://creativecommons.org/publicdomain/zero/1.0/legalcode),
 the text of which is also reproduced in the
 [COPYING.CC0](./COPYING.CC0) file locally.
