@@ -1,3 +1,11 @@
+pomodorino (0.1.1) trusty; urgency=medium
+
+  * First unstable release (skip v0.1.0 because dpkg seems to think
+    v0.1.0b8 is more recent.
+  * Italian and Turkish translations completed.
+
+ -- Göktuğ Kayaalp <self@gkayaalp.com>  Sat, 06 Mar 2021 17:00:00 +0300
+
 pomodorino (0.1.0b8) trusty; urgency=medium
 
   * 8th Beta release of v0.1.0.

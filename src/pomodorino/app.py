@@ -41,7 +41,7 @@ import sys
 
 APP_ID = "com.gkayaalp.pomodorino"
 
-VERSION = "0.1.0b8"
+VERSION = "0.1.1"
 
 
 @unique
