@@ -1,5 +1,5 @@
 # it.po --- Traduzioni italiane.
-# Copyright (C) 2020 Göktuğ Kayaalp <self at gkayaalp dot com>
+# Copyright (C) 2020, 2021 Göktuğ Kayaalp <self at gkayaalp dot com>
 # This file is distributed under the same license as the Pomodorino package.
 # Göktuğ Kayaalp <self at gkayaalp dot com>, 2020.
 #
@@ -27,7 +27,6 @@ msgid "Cancel"
 msgstr "Cancella"
 
 #: src/pomodorino/app.py:268
-#, fuzzy
 msgid "Completed ease-in period"
 msgstr "Pomodoro è finito"
 
@@ -53,24 +52,23 @@ msgstr "Notificazioni desktop:"
 
 #: src/pomodorino/app.py:405
 msgid "Ease in!"
-msgstr ""
+msgstr "Accomodati!"
 
 #: src/pomodorino/settingsmodal.py:67
 msgid "Ease-in mode:"
-msgstr ""
+msgstr "Modalità intervallo per accomodarsi"
 
 #: src/pomodorino/app.py:83
 msgid "Get going!"
 msgstr "Va’!"
 
 #: src/pomodorino/settingsmodal.py:55
-#, fuzzy
 msgid "Long break duration (minutes):"
 msgstr "Durata delle pause lunghe (minuti):"
 
 #: src/pomodorino/app.py:95
 msgid "Notifications server does not support actions"
-msgstr ""
+msgstr "Server notificazioni non supporta azioni"
 
 #: src/pomodorino/indicator.py:70 src/pomodorino/indicator.py:126
 msgid "Pause"
@@ -85,7 +83,6 @@ msgid "Pomodorino is ready!"
 msgstr "Pronto! Sono io, Pomodorino!"
 
 #: src/pomodorino/settingsmodal.py:51
-#, fuzzy
 msgid "Pomodoro duration (minutes):"
 msgstr "Durata dei pomodoro (minuti):"
 
@@ -99,7 +96,7 @@ msgstr "Esci"
 
 #: src/pomodorino/indicator.py:77
 msgid "Reset"
-msgstr "Resetta"
+msgstr "Azzera"
 
 #: src/pomodorino/app.py:231 src/pomodorino/indicator.py:124
 msgid "Resume"
@@ -110,7 +107,6 @@ msgid "Settings"
 msgstr "Impostazioni"
 
 #: src/pomodorino/settingsmodal.py:53
-#, fuzzy
 msgid "Short break duration (minutes):"
 msgstr "Durata delle pause brevi (minuti):"
 
@@ -119,18 +115,16 @@ msgid "Simple Pomodoro Timer."
 msgstr "Semplice Timer Pomodoro."
 
 #: src/pomodorino/indicator.py:73
-#, fuzzy
 msgid "Skip break"
-msgstr "Avvia una pausa"
+msgstr "Salta la pausa"
 
 #: src/pomodorino/app.py:222
-#, fuzzy
 msgid "Skipped a break"
-msgstr "Avvia una pausa"
+msgstr "Saltata la pausa"
 
 #: src/pomodorino/app.py:220
 msgid "Skipped ease-in period"
-msgstr ""
+msgstr "Saltato periodo accomodazione"
 
 #: src/pomodorino/app.py:85
 msgid "Start break"
@@ -141,7 +135,6 @@ msgid "Start new pomodoro"
 msgstr "Avvia un nuovo pomodoro"
 
 #: src/pomodorino/app.py:236
-#, fuzzy
 msgid "Started ease-in period"
 msgstr "Nuovo pomodoro avviato"
 

@@ -1,5 +1,5 @@
 # tr.po --- Turkish translations.
-# Copyright (C) 2020 Göktuğ Kayaalp <self at gkayaalp dot com>
+# Copyright (C) 2020, 2021 Göktuğ Kayaalp <self at gkayaalp dot com>
 # This file is distributed under the same license as the Pomodorino package.
 # Göktuğ Kayaalp <self at gkayaalp dot com>, 2020.
 #
@@ -27,7 +27,6 @@ msgid "Cancel"
 msgstr "İptal"
 
 #: src/pomodorino/app.py:268
-#, fuzzy
 msgid "Completed ease-in period"
 msgstr "Pomodoro tamamlandı"
 
@@ -53,24 +52,23 @@ msgstr "Masaüstü notifikasyonları:"
 
 #: src/pomodorino/app.py:405
 msgid "Ease in!"
-msgstr ""
+msgstr "Isın!"
 
 #: src/pomodorino/settingsmodal.py:67
 msgid "Ease-in mode:"
-msgstr ""
+msgstr "Isınma modu"
 
 #: src/pomodorino/app.py:83
 msgid "Get going!"
 msgstr "Haydi başla!"
 
 #: src/pomodorino/settingsmodal.py:55
-#, fuzzy
 msgid "Long break duration (minutes):"
 msgstr "Uzun ara süresi (dakika)"
 
 #: src/pomodorino/app.py:95
 msgid "Notifications server does not support actions"
-msgstr ""
+msgstr "Bildirim sunucusu eylemleri desteklemiyor"
 
 #: src/pomodorino/indicator.py:70 src/pomodorino/indicator.py:126
 msgid "Pause"
@@ -85,7 +83,6 @@ msgid "Pomodorino is ready!"
 msgstr "Pomodorino hazır!"
 
 #: src/pomodorino/settingsmodal.py:51
-#, fuzzy
 msgid "Pomodoro duration (minutes):"
 msgstr "Pomodoro süresi (dakika):"
 
@@ -110,7 +107,6 @@ msgid "Settings"
 msgstr "Ayarlar"
 
 #: src/pomodorino/settingsmodal.py:53
-#, fuzzy
 msgid "Short break duration (minutes):"
 msgstr "Kısa ara süresi (dakika):"
 
@@ -119,18 +115,16 @@ msgid "Simple Pomodoro Timer."
 msgstr "Basit Pomodoro Kronometresi"
 
 #: src/pomodorino/indicator.py:73
-#, fuzzy
 msgid "Skip break"
-msgstr "Araya başla"
+msgstr "Arayı atla"
 
 #: src/pomodorino/app.py:222
-#, fuzzy
 msgid "Skipped a break"
-msgstr "Araya başla"
+msgstr "Ara atlandı"
 
 #: src/pomodorino/app.py:220
 msgid "Skipped ease-in period"
-msgstr ""
+msgstr "Isınma periyodu atlandı"
 
 #: src/pomodorino/app.py:85
 msgid "Start break"
@@ -141,7 +135,6 @@ msgid "Start new pomodoro"
 msgstr "Yeni pomodoroya başla"
 
 #: src/pomodorino/app.py:236
-#, fuzzy
 msgid "Started ease-in period"
 msgstr "Yeni pomodoro başladı"
 
