@@ -16,6 +16,9 @@ Using Pomodorino should be rather straight-forward if you know about
 the [Pomodoro Technique®][pt] (which is a registered trademark of
 Francesco Cirillo).
 
+For more information, see the [manual](./doc/pomodorino.1.markdown) and
+the [wiki](https://github.com/cadadr/pomodorino/wiki).
+
 [pt]: https://en.wikipedia.org/wiki/Pomodoro_Technique
 
 
