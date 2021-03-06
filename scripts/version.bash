@@ -20,3 +20,6 @@ grep -H ^VERSION src/pomodorino/app.py
 
 sed -Ei "s/^(footer: pomodorino ).*/\\1v$V/" doc/pomodorino.1.markdown
 grep -H ^footer: doc/pomodorino.1.markdown
+
+echo
+echo Do not forget to update changelogs\!
