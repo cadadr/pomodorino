@@ -24,4 +24,6 @@ export PYTHONPATH="$PWD/src"
 export DEBUG_LOCALE_DIR=data/gettext
 export DEBUG_CLOCK_RESOLUTION=10
 
+./scripts/compile-translations.bash
+
 ./.venv/bin/python src/pomodorino/app.py
