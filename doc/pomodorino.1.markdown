@@ -2,7 +2,7 @@
 title: POMODORINO
 section: 1
 header: User Manual
-footer: pomodorino v0.1.1
+footer: pomodorino v0.2.0a1
 date: March 1, 2021
 ---
 

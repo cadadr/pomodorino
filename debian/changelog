@@ -1,3 +1,12 @@
+pomodorino (0.2.0-1~alpha1) buster; urgency=medium
+
+        * Indicate app state using the indicator icon (partial
+        implementation of issue #21).
+        * Build debian package using the recommended pybuild option
+        * Upgrade debian package compatibility to version 12
+
+ -- Göktuğ Kayaalp <self@gkayaalp.com>  Sat, 15 May 2021 13:00:00 +0300
+
 pomodorino (0.1.1) trusty; urgency=medium
 
   * First unstable release (skip v0.1.0 because dpkg seems to think
