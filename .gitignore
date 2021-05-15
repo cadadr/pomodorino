@@ -20,3 +20,4 @@ po/compile.report
 *~
 *\#
 *.swp
+.pybuild/
