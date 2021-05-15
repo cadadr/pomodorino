@@ -367,7 +367,7 @@ class App(Gtk.Application):
             self.about_dialog.set_logo(self.get_app_icon_pixbuf(64))
             self.about_dialog.set_comments(_("Simple Pomodoro Timer."))
             self.about_dialog.set_copyright(
-                _("Copyright (C) 2019, 2020 Göktuğ Kayaalp <self@gkayaalp.com>"))
+                _("Copyright (C) 2019, 2020, 2021 Göktuğ Kayaalp <self@gkayaalp.com>"))
             self.about_dialog.set_license_type(Gtk.License.GPL_3_0)
             self.about_dialog.set_website("https://www.gkayaalp.com/pomodorino.html")
             self.about_dialog.set_website_label(_("Website: {}").format(
