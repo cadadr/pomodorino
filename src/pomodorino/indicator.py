@@ -59,7 +59,6 @@ class Indicator:
         self.i.set_menu(self.menu)
 
         self.label_guide = "00:00"
-        self.i.set_label("--:--", self.label_guide)
 
         self.update()
 
