@@ -39,10 +39,14 @@ the [wiki](https://github.com/cadadr/pomodorino/wiki).
 
 ## Dependencies
 
-- Python 3
+Pomodorino is mainly based on Python 3 and GTK+3.
+
+- [Python 3](https://www.python.org)
 - [PyGObject](https://pygobject.readthedocs.io/en/latest/)
 - [notify2](https://pypi.org/project/notify2/)
 - [dbus-python](https://pypi.org/project/dbus-python/)
+- [libayatana-appindicator](https://github.com/AyatanaIndicators/libayatana-appindicator)
+  - on Debian: `gir1.2-ayatanaappindicator3-0.1`
 
 ## Building and Installation
 
@@ -97,19 +101,12 @@ run 100x faster than normal, in order to facilitate testing.  In order
 to use `run.sh` for general use of Pomodorino, you should modify the
 script to not export the variable `DEBUG_CLOCK_RESOLUTION`.
 
-The preparation for using `run.sh` is as follows:
-
-1. Create a virtual environment:
-
-       $ python3 -m venv .venv
-
-2. Install Pomodorino’s dependencies:
-
-       $ ./.venv/bin/pip install -r requirements.txt
-
-3. Run Pomodorino:
+If you just run
 
        $ ./run.sh
+
+it will set up a virtual environment at `.venv` and run Pomodorino in
+it.
 
 ## Contributing & Issues
 
