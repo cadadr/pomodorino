@@ -22,8 +22,11 @@ gtk-update-icon-cache
 export XDG_DATA_HOME GSETTINGS_SCHEMA_DIR
 export PYTHONPATH="$PWD/src"
 export DEBUG_LOCALE_DIR=data/gettext
-export DEBUG_CLOCK_RESOLUTION=10
+export DEBUG_CLOCK_RESOLUTION=${DEBUG_CLOCK_RESOLUTION-10}
 
 ./scripts/compile-translations.bash
+
+[ -d .venv ] || python3 -m venv .venv
+./.venv/bin/pip install -r requirements.txt
 
 ./.venv/bin/python src/pomodorino/app.py
