@@ -40,11 +40,16 @@ class Indicator:
 
     def __init__(self, *args, **kwargs):
         self.app = kwargs["application"]
+
         self.i = AppIndicator3.Indicator.new(
             self.app.app_id,
-            self.app.get_app_icon_path(64),
+            # self.icon_neutral,
+            self.app.app_id,
             AppIndicator3.IndicatorCategory.APPLICATION_STATUS
         )
+
+        # Re-set icon here because ‘set_icon_full’ allows for an alt-text.
+        self.i.set_icon_full(self.app.app_id, _("Waiting for user action"))
 
         self.menu = None
         self.build_menu()
@@ -52,8 +57,9 @@ class Indicator:
         self.i.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
         self.i.set_title(self.app.app_name)
         self.i.set_menu(self.menu)
-        self.i.props.label_guide = "00:00"
-        self.i.props.label = "--:--"
+
+        self.label_guide = "00:00"
+        self.i.set_label("--:--", self.label_guide)
 
         self.update()
 
@@ -105,9 +111,13 @@ class Indicator:
             self.app.pomodoro_count
         )
 
-        self.i.props.label = "{}".format(
+        # XXX(2021-05-15): y no work :’(
+        indicator_label = "{}".format(
             self.app.get_timer_label(self.app.timer_seconds - self.app.time_elapsed)
         )
+
+        self.i.set_label(indicator_label, self.label_guide)
+        self.i.set_title(f"{self.app.app_name}: {progress_label}")
 
         self.menu_progress.set_label(progress_label)
         self.menu_multi.set_label(self.app.get_multi_button_label())
@@ -122,5 +132,11 @@ class Indicator:
 
         if self.app.paused:
             self.menu_pause.set_label(_("Resume"))
+            self.i.set_icon_full("media-playback-pause", _("Paused"))
+        elif self.app.state in [self.app.states.INITIAL,
+                                self.app.states.AFTER_POMODORO,
+                                self.app.states.AFTER_BREAK]:
+            self.i.set_icon_full(self.app.app_id, _("Waiting for user action"))
         else:
             self.menu_pause.set_label(_("Pause"))
+            self.i.set_icon_full("appointment-soon", _("Timer in progress"))

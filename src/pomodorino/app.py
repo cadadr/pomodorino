@@ -72,6 +72,7 @@ class App(Gtk.Application):
         self.gsettings = Gio.Settings.new(self.app_id)
         self.settings_popup = None
         self.about_dialog = None
+        self.states = States    # allow the indicator access this
         self.state = States.INITIAL
         self.pomodoro_count = 0
         self.phase_seconds = {}
