@@ -4,10 +4,11 @@ Section: utils
 Priority: optional
 Standards-Version: 3.9.2
 Build-Depends: debhelper (>= 9), python3, pandoc, gettext
+X-Python3-Version: >= 3.6
 
 Package: pomodorino
 Architecture: all
-Depends: python3, python3-gi, python3-gi-cairo, python3-notify2, python3-dbus
+Depends: ${python3:Depends}, ${misc:Depends}, python3, python3-gi, python3-gi-cairo, python3-notify2, python3-dbus
 Description: Simple GTK+ Pomodoro(TM) applet
  Pomodorino is a lightweight, simple Pomodoro timer system tray
  application written using Python 3 and GTK 3.
