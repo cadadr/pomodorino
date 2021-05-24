@@ -1,4 +1,4 @@
-name: Build packages and publish automatic prerelease
+name: Build
 
 on:
   push:
