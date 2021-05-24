@@ -30,4 +30,4 @@ jobs:
           ( cd $GITHUB_WORKSPACE ; rm -rf .git )
       
       - name: Build Debian package
-        uses: dawidd6/action-debian-package@v1.3.2
+        uses: cadadr/action-debian-package@master
