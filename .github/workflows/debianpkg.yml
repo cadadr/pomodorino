@@ -27,11 +27,6 @@ jobs:
       
       - name: Build Debian package
         uses: dawidd6/action-debian-package@v1.3.2
-        with:
-          # Optional, relative to workspace directory
-          source_directory: pomodorino
-          # Optional, relative to workspace directory
-          artifacts_directory: output
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
