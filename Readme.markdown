@@ -2,7 +2,10 @@
 
 <p align="center"><img src="assets/logo.png" width=64px alt="Pomodorino logo" /></p>
 
-[![Build debian package](https://github.com/cadadr/pomodorino/actions/workflows/debianpkg.yml/badge.svg)](https://github.com/cadadr/pomodorino/actions/workflows/debianpkg.yml)
+[![Build debian package](https://github.com/cadadr/pomodorino/actions/workflows/build.yml/badge.svg)](https://github.com/cadadr/pomodorino/actions/workflows/build.yml) 
+![latest release](https://img.shields.io/github/v/release/cadadr/pomodorino?label=Latest%20release) 
+![latest prerelease](https://img.shields.io/github/v/release/cadadr/pomodorino?color=%230050af&include_prereleases&sort=semver&label=Latest%20prerelease) 
+![latest development release](https://img.shields.io/github/v/release/cadadr/pomodorino?include_prereleases&label=Latest%20dev%20release)
 
 Pomodorino is a lightweight, simple Pomodoro timer system tray
 application written using Python 3 and GTK 3.
