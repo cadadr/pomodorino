@@ -1,1 +1,1 @@
-extend-diff-ignore = "*.(mo|1|report)$"
+extend-diff-ignore = "(*.(mo|1|report))$"
