@@ -3,7 +3,7 @@ Maintainer: Göktuğ Kayaalp <self@gkayaalp.com>
 Section: utils
 Priority: optional
 Standards-Version: 3.9.2
-Build-Depends: debhelper (>= 9), python3, pandoc, gettext
+Build-Depends: debhelper (>= 9), python3, python3-dev, python3-setuptools, pandoc, gettext
 X-Python3-Version: >= 3.6
 
 Package: pomodorino
