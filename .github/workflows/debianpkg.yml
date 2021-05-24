@@ -31,3 +31,9 @@ jobs:
       
       - name: Build Debian package
         uses: cadadr/action-debian-package@master
+        
+      - name: Archive resulting package
+        uses: actions/upload-artifact@v2
+        with:
+          name: debian-package
+          path: pomodorino*.deb
