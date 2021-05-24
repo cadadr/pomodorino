@@ -2,6 +2,8 @@
 
 include /usr/share/dpkg/pkg-info.mk
 
+export PYBUILD_DISABLE=test
+
 PYTHON3_VERSIONS = $(shell py3versions -r)
 py3sdo = set -e; $(foreach py, $(PYTHON3_VERSIONS), $(py) $(1);)
 
