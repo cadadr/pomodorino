@@ -9,7 +9,7 @@
     <img src="https://img.shields.io/github/v/release/cadadr/pomodorino?label=Latest%20release" alt="latest release" /></a>
 
   <a href="https://github.com/cadadr/pomodorino/releases/tag/latest">
-    <img src="https://img.shields.io/github/v/release/cadadr/pomodorino?include_prereleases&amp;label=Latest%20dev%20release" alt="latest development release" />
+    <img src="https://img.shields.io/github/v/release/cadadr/pomodorino?include_prereleases&amp;label=Latest%20dev%20release" alt="latest development release" /></a>
 </p>
 
 Pomodorino is a lightweight, simple Pomodoro timer system tray
