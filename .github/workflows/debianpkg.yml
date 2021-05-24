@@ -25,12 +25,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # From: https://stackoverflow.com/questions/10262754/set-debuild-dpkg-to-always-ignore-git-directories
       - name: hack .git away
         run: |
-          cd pomodorino
-          git archive master | tar -x -C ../pomodorino-archive
-          cd ..
+          ( cd $GITHUB_WORKSPACE ; rm -rf .git )
       
       - name: Build Debian package
         uses: dawidd6/action-debian-package@v1.3.2
