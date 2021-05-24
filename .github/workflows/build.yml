@@ -20,6 +20,10 @@ jobs:
       - name: Build Debian package
         uses: cadadr/action-debian-package@master
         
+      - name: Rename Debian package
+        run: |
+          mv pomodorino*_all.deb "pomodorino-$(git rev-parse --short HEAD)_all.deb"
+        
       - name: Archive resulting package
         uses: actions/upload-artifact@v2
         with:
