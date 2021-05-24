@@ -31,5 +31,3 @@ jobs:
       
       - name: Build Debian package
         uses: dawidd6/action-debian-package@v1.3.2
-        with:
-          source_directory: pomodorino-archive
