@@ -2,10 +2,15 @@
 
 <p align="center"><img src="assets/logo.png" width=64px alt="Pomodorino logo" /></p>
 
-[![Build debian package](https://github.com/cadadr/pomodorino/actions/workflows/build.yml/badge.svg)](https://github.com/cadadr/pomodorino/actions/workflows/build.yml) 
-![latest release](https://img.shields.io/github/v/release/cadadr/pomodorino?label=Latest%20release) 
-![latest prerelease](https://img.shields.io/github/v/release/cadadr/pomodorino?color=%230050af&include_prereleases&sort=semver&label=Latest%20prerelease) 
-![latest development release](https://img.shields.io/github/v/release/cadadr/pomodorino?include_prereleases&label=Latest%20dev%20release)
+<p align="center">
+  <a href="https://github.com/cadadr/pomodorino/actions/workflows/build.yml"><img src="https://github.com/cadadr/pomodorino/actions/workflows/build.yml/badge.svg" alt="Build debian package" /></a>
+
+  <a href="https://github.com/cadadr/pomodorino/releases/latest">
+    <img src="https://img.shields.io/github/v/release/cadadr/pomodorino?label=Latest%20release" alt="latest release" /></a>
+
+  <a href="https://github.com/cadadr/pomodorino/releases/tag/latest">
+    <img src="https://img.shields.io/github/v/release/cadadr/pomodorino?include_prereleases&amp;label=Latest%20dev%20release" alt="latest development release" /></a>
+</p>
 
 Pomodorino is a lightweight, simple Pomodoro timer system tray
 application written using Python 3 and GTK 3.
