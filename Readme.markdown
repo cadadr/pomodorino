@@ -94,6 +94,24 @@ Building the Debian package is simple:
 3. Relevant files, including the Debian package itself, will be output
    to the parent directory of your working directory.
 
+### Building and Installing on Arch Linux
+
+A `PKGBUILD` is provided on AUR:
+
+    $ git clone https://aur.archlinux.org/packages/pomodorino/
+    $ cd pomodorino
+    $ makepkg -s
+
+This will produce a `.tar.zst` file, which you can then install as
+follows:
+
+    $ sudo pacman -U *.tar.zst
+
+Of course, you can also use any of the [AUR helpers] instead of manually
+building and installing.
+
+[AUR helpers]: https://wiki.archlinux.org/title/AUR_helpers
+
 ### Running from source repository
 
 A script, `run.sh`, is included to help with testing, it sets up an
