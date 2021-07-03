@@ -101,7 +101,7 @@ Building the Debian package is simple:
 
 ### Building and Installing on Arch Linux
 
-A `PKGBUILD` is provided on AUR:
+A `PKGBUILD` is [provided on AUR](https://aur.archlinux.org/packages/pomodorino/):
 
     $ git clone https://aur.archlinux.org/packages/pomodorino/
     $ cd pomodorino
