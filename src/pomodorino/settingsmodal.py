@@ -54,25 +54,14 @@ class SettingsModal(Gtk.Window):
         self.long_break_spinner = self.make_time_spinner_and_attach(
             _("Long break duration (minutes):"), self.app.states.LONG_BREAK)
 
-        self.add_label(_("Desktop notifications:"))
-        self.suppress_desktop_notifs_switch = Gtk.Switch()
-        self.suppress_desktop_notifs_switch.connect(
-            "state_set", lambda x, y: self.app.on_suppress_desktop_notifs_switch_set(x, y)
-        )
-        # Don’t expand to fill:
-        self.suppress_desktop_notifs_switch.set_halign(Gtk.Align.CENTER)
-        self.add_control(self.suppress_desktop_notifs_switch)
+        self.suppress_desktop_notifs_switch = self.make_toggle_and_attach(
+            _("Desktop _notifications:"),
+            lambda x, y: self.app.on_suppress_desktop_notifs_switch_set(x, y))
 
 
-        self.add_label(_("Ease-in mode:"))
-        self.ease_in_mode_switch = Gtk.Switch()
-        self.ease_in_mode_switch.connect(
-            "state_set", lambda x, y: self.app.on_ease_in_mode_switch_set(x, y)
-        )
-        # Don’t expand to fill:
-        self.ease_in_mode_switch.set_halign(Gtk.Align.CENTER)
-        self.add_control(self.ease_in_mode_switch)
-
+        self.ease_in_mode_enabled = self.make_toggle_and_attach(
+            _("Desktop _notifications:"),
+            lambda x, y: self.app.on_ease_in_mode_switch_set(x, y))
 
         self.add(self.grid)
 
@@ -87,6 +76,7 @@ class SettingsModal(Gtk.Window):
         label = Gtk.Label(label=text)
         label.set_halign(Gtk.Align.START)
         self.grid.attach(label, 0, self.grid_row, 2, 1)
+        return label
 
 
     def add_control(self, control):
@@ -95,9 +85,11 @@ class SettingsModal(Gtk.Window):
 
 
     def make_time_spinner_and_attach(self, text, state):
-        self.add_label(text)
+        label = self.add_label(text)
 
         spinner = Gtk.SpinButton.new_with_range(1.0, 6000.0, 1.0)
+
+        label.set_mnemonic_widget(spinner)
 
         spinner.set_digits(0)
         spinner.set_snap_to_ticks(True)
@@ -111,6 +103,22 @@ class SettingsModal(Gtk.Window):
         self.add_control(spinner)
 
         return spinner
+
+
+    def make_toggle_and_attach(self, text, on_state_set):
+        label = self.add_label(_(text))
+
+        switch = Gtk.Switch()
+
+        label.set_mnemonic_widget(switch)
+
+        switch.connect("state_set", on_state_set)
+
+        # Don’t expand to fill:
+        switch.set_halign(Gtk.Align.CENTER)
+        self.add_control(switch)
+
+        return switch
 
 
     def update(self):
