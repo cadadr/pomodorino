@@ -25,7 +25,6 @@
 import gi
 
 gi.require_version('Gtk', '3.0')
-gi.require_version('AyatanaAppIndicator3', '0.1')
 
 from gi.repository import Gtk, Gio, GLib
 import notify2
