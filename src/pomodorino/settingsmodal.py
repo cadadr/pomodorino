@@ -55,13 +55,12 @@ class SettingsModal(Gtk.Window):
             _("Long break duration (minutes):"), self.app.states.LONG_BREAK)
 
         self.suppress_desktop_notifs_switch = self.make_toggle_and_attach(
-            _("Desktop _notifications:"),
-            lambda x, y: self.app.on_suppress_desktop_notifs_switch_set(x, y))
+            _("Desktop notifications:"),
+            self.app.on_suppress_desktop_notifs_switch_set)
 
-
-        self.ease_in_mode_enabled = self.make_toggle_and_attach(
-            _("Desktop _notifications:"),
-            lambda x, y: self.app.on_ease_in_mode_switch_set(x, y))
+        self.ease_in_mode_switch = self.make_toggle_and_attach(
+            _("Ease-in mode:"),
+            self.app.on_ease_in_mode_switch_set)
 
         self.add(self.grid)
 
