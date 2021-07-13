@@ -86,6 +86,9 @@ straightforward.
 
 ### Building a Debian package
 
+**Note**: *The Debian package files [will soon move to a separate
+repository](https://github.com/cadadr/pomodorino/issues/59).*
+
 Building the Debian package is simple:
 
 1. Install `devscripts`:
@@ -135,6 +138,17 @@ If you just run
 
 it will set up a virtual environment at `.venv` and run Pomodorino in
 it.
+
+### Note for Gnome 3, Gnome 40, and Elementary users
+
+These desktops sadly do not support system tray icons, which is
+currently the main user interface of Pomodorino. There is an
+[extension](https://github.com/ubuntu/gnome-shell-extension-appindicator)
+that you can install, which would allow you to use Pomodorino
+on these desktops.  I will [add a main window in the future](https://github.com/cadadr/pomodorino/issues/58)
+and also plan to support a [global keybindings based interface](https://github.com/cadadr/pomodorino/issues/55)
+which will not only remedy this issue but make the app more accessible,
+as the extension is not great with screen readers.
 
 ## Contributing & Issues
 
