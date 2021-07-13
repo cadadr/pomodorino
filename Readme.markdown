@@ -150,6 +150,19 @@ and also plan to support a [global keybindings based interface](https://github.c
 which will not only remedy this issue but make the app more accessible,
 as the extension is not great with screen readers.
 
+### Note about accessibility features
+
+I am working to improve accessibility of Pomodorino on the
+[`better-accessibility` branch](https://github.com/cadadr/pomodorino/tree/basic-accessibility).
+Any accessibility-related issues and patches are totally welcome!
+
+### Note about potential rewrite
+
+I am [considering to rewrite this in Rust or Vala](https://github.com/cadadr/pomodorino/issues/48)
+because packaging Python apps is difficult and too delicate. Pomodorino is
+still pretty small SLoC-wise, so that shouldn't be that big of a disruption
+to any users, if anybody's using it at this stage.
+
 ## Contributing & Issues
 
 Contributions are welcome!  Please submit a pull request or e-mail a
